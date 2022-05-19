@@ -8,6 +8,9 @@ const os = require("os");
 module.exports = {
   entry: path.join(__dirname, '../src/index.tsx'),
   output: {
+    libraryTarget: "umd",
+    library: "calendar-ts",
+    libraryExport: "default",
     path: path.join(__dirname, '../dist'),
     filename: "calendar_[chunkhash:8].js"
   },
