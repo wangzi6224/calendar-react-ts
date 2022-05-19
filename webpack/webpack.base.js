@@ -12,7 +12,7 @@ module.exports = {
     library: "calendar-ts",
     libraryExport: "default",
     path: path.join(__dirname, '../dist'),
-    filename: "calendar_[chunkhash:8].js"
+    filename: "index.js"
   },
   mode: "production",
   module: {
