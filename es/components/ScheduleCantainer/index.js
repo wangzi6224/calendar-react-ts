@@ -1,10 +1,10 @@
 import moment from 'moment';
-import style from './index.less';
+import style from "./index.less";
 import React, { useContext, useEffect, useMemo, useState } from 'react';
-import { getDay, getMonth, getYear, getZeroTime } from '@/utils';
-import ScheduleItem from '@/components/ScheduleItem';
-import MovingBaseLine from '@/components/ScheduleCantainer/MovingBaseLine';
-import { GlobalData } from "@/components/Container";
+import { getDay, getMonth, getYear, getZeroTime } from "../../utils";
+import ScheduleItem from "../ScheduleItem";
+import MovingBaseLine from "./MovingBaseLine";
+import { GlobalData } from "../Container";
 
 var ScheduleCantainer = function ScheduleCantainer(_ref) {
   var scheduleRender = _ref.scheduleRender,

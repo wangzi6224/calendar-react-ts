@@ -11,6 +11,12 @@
   ],
   "plugins": [
     "@babel/proposal-class-properties",
+    ["module-resolver", {
+      "root": ["./src"],
+      "alias": {
+        "@": "./src"
+      }
+    }],
     [
       "@babel/plugin-transform-runtime",
       {

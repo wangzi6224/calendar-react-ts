@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
-import style from './index.less';
-import DailyOptions from '@/components/CalendarHeader/components/DailyOptions';
-import WeeklyOptions from '@/components/CalendarHeader/components/WeeklyOptions';
-import { weekDay } from '@/utils';
-import { GlobalData } from "@/components/Container";
+import style from "./index.less";
+import DailyOptions from "./components/DailyOptions";
+import WeeklyOptions from "./components/WeeklyOptions";
+import { weekDay } from "../../utils";
+import { GlobalData } from "../Container";
 
 var CalendarHeader = function CalendarHeader(_ref) {
   var businessRender = _ref.businessRender;

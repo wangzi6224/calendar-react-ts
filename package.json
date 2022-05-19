@@ -1,6 +1,6 @@
 {
   "name": "calendar-react-ts",
-  "version": "0.0.5",
+  "version": "0.0.5.1",
   "description": "a calendar component by react with typescript",
   "main": "es/index.js",
   "scripts": {
@@ -39,6 +39,7 @@
     "@types/react-dom": "^18.0.4",
     "autoprefixer": "^10.4.7",
     "babel-loader": "^8.2.5",
+    "babel-plugin-module-alias": "^1.6.0",
     "clean-webpack-plugin": "^4.0.0",
     "cross-env": "^7.0.3",
     "css-loader": "^6.7.1",
@@ -58,6 +59,7 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
+    "babel-plugin-module-resolver": "^4.1.0",
     "moment": "^2.29.3",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",

@@ -1,5 +1,5 @@
 import React from 'react';
-import style from '@/components/ScheduleCantainer/index.less';
+import style from "../index.less";
 
 var MovingBaseLine = function MovingBaseLine(_ref) {
   var movingTop = _ref.movingTop,

@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
-import style from './index.less';
+import style from "./index.less";
 import moment from 'moment';
-import { getDay } from '@/utils';
-import { GlobalData } from "@/components/Container";
+import { getDay } from "../../../../utils";
+import { GlobalData } from "../../../Container";
 
 var DailyOptions = function DailyOptions(_ref) {
   var setCurrTime = _ref.setCurrTime,

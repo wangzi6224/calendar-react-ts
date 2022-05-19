@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
-import style from './index.less';
-import { getDay, getMonth, getYear } from '@/utils';
-import { GlobalData } from "@/components/Container";
+import style from "./index.less";
+import { getDay, getMonth, getYear } from "../../../../utils";
+import { GlobalData } from "../../../Container";
 
 var WeeklyOptions = function WeeklyOptions(_ref) {
   var dateTextList = _ref.dateTextList;

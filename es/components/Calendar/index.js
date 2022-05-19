@@ -1,6 +1,6 @@
 import React from 'react';
-import Container from '@/components/Container';
-import styles from '@/styles/initial.less';
+import Container from "../Container";
+import styles from "../../styles/initial.less";
 
 var Calendar = function Calendar(_ref) {
   var _ref$initDay = _ref.initDay,
