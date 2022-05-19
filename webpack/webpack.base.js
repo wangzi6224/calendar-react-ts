@@ -3,16 +3,18 @@ const {CleanWebpackPlugin} = require("clean-webpack-plugin");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
+const { name } = require("../package.json");
 const os = require("os");
+
+const distDir = path.join(__dirname, '../dist')
 
 module.exports = {
   entry: path.join(__dirname, '../src/index.tsx'),
   output: {
     libraryTarget: "umd",
-    library: "calendar-ts",
-    libraryExport: "default",
-    path: path.join(__dirname, '../dist'),
-    filename: "index.js"
+    library: [name],
+    path: distDir,
+    filename: "[name].min.js"
   },
   mode: "production",
   module: {
@@ -85,7 +87,7 @@ module.exports = {
     minimizer: [
       new CssMinimizerPlugin({
         test: /\.css$/,
-        parallel: 4
+        parallel: 4,
       }),
       new TerserPlugin({
         parallel: os.cpus().length - 1,

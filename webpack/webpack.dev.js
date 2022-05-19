@@ -14,7 +14,7 @@ const devConfig = {
   },
   plugins:[
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, `../src/example/index.html`),
+      template: path.join(__dirname, `../public/index.html`),
       filename: `index.html`,
       chunks: '[hash:8]',
       inject: true,
