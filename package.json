@@ -1,5 +1,5 @@
 {
-  "name": "calendar-ts",
+  "name": "calendar-react-ts",
   "version": "0.0.1",
   "description": "a calendar component by react with typescript",
   "main": "index.js",
