@@ -1,0 +1,39 @@
+.WT_Calendar_ScheduleItem {
+  display: flex;
+  justify-content: flex-start;
+  height: 30px;
+  padding: 0 17px 0 2px;
+  background: #fefefe;
+  border-bottom: 1px solid #e5e5e7;
+  box-sizing: border-box;
+}
+
+.WT_Calendar_ScheduleItem_Fath {
+  &:first-child .WT_Calendar_ScheduleItem {
+    border-top: 1px solid #e5e5e7;
+  }
+  &:last-child .WT_Calendar_ScheduleItem {
+    border: 0;
+  }
+}
+
+.WT_Calendar_ScheduleItem_container {
+  position: relative;
+  z-index: 9;
+  box-sizing: border-box;
+  margin: 0 2px;
+  padding: 0;
+  overflow: hidden;
+  font-size: 12px;
+  background: rgba(215, 242, 255, 50%);
+  border-top: 2px solid #1890ff;
+  border-bottom: 2px solid #1890ff;
+  user-select: none;
+}
+
+.WT_Calendar_ScheduleItem_scale {
+  position: absolute;
+  top: 18px;
+  left: -35px;
+  z-index: 10;
+}

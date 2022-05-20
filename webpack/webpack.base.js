@@ -11,12 +11,9 @@ const distDir = path.join(__dirname, '../dist')
 module.exports = {
   entry: path.join(__dirname, '../src/index.tsx'),
   output: {
-    libraryTarget: "umd",
-    library: [name],
     path: distDir,
-    filename: "[name].min.js"
+    filename: `${name}.min.js`
   },
-  mode: "production",
   module: {
     rules: [
       {

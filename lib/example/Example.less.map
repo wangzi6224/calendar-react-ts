@@ -1,0 +1,1 @@
+{"version":3,"names":[],"mappings":"","sources":["example/Example.less"],"sourcesContent":[".Example {\n  margin: 20px auto;\n  width: 400px;\n  border: 1px solid #a29fa5;\n  border-radius: 8px;\n}\n"],"file":"Example.less"}
