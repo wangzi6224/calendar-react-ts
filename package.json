@@ -9,8 +9,7 @@
     "build:commonjs": "rimraf lib && cross-env BABEL_ENV=commonjs babel src --extensions .ts,.tsx -d lib --source-maps && npm run build:css",
     "build:es": "rimraf es && cross-env BABEL_ENV=es babel src --extensions .ts,.tsx -d es --source-maps && npm run build:css",
     "build": "cross-env BABEL_ENV=umd webpack --config webpack/webpack.prod.js --mode production",
-    "dev": "webpack-dev-server --config webpack/webpack.dev.js --open",
-    "prepublish": "npm run build:es && npm run build:commonjs && npm run build"
+    "dev": "webpack-dev-server --config webpack/webpack.dev.js --open"
   },
   "repository": {
     "type": "git",
