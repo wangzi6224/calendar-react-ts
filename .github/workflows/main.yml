@@ -1,29 +1,18 @@
-name: npm-build-publish
+name: auto publish to npm
 on:
   push:
-    branches:
-      - master
-
+    branches: [master]
 jobs:
-  npm-build-publish:
+  build-and-publish:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@master
-      # required - sets up auth in the node env
-      - name: Set up Node.js
-        uses: actions/setup-node@master
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: 12.x
-          registry-url: 'https://npm.pkg.github.com'
-      # optional
+          node-version: 16.x
       - run: npm install
-      # optional
-      - run: npm run build
-        env:
-          CI: true
-      # required
-      - name: version & publish
-        uses: geeman201/conventional-changelog-npm-publish/@v14
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: npm test
+      - uses: JS-DevTools/npm-publish@v1
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
+          registry: https://registry.npmjs.org/
