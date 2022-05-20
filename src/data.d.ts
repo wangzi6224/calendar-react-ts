@@ -1,6 +1,6 @@
 import type React from 'react';
 
-export type timestampRange = [number, number]
+export type timestampRange = [number, number];
 
 export type ContainerType = {
   data: dataType[];
