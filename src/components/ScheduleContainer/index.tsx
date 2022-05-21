@@ -3,10 +3,11 @@ import style from './index.less';
 import React, {useContext, useEffect, useMemo, useState} from 'react';
 import { getDay, getMonth, getYear, getZeroTime } from '@/utils';
 import ScheduleItem from '@/components/ScheduleItem';
-import MovingBaseLine from '@/components/ScheduleContainer/MovingBaseLine';
+import MovingBaseLine from '@/components/ScheduleContainer/components/MovingBaseLine';
 import type { ScheduleContainerType, HourType, scheduleListType } from '@/data.d';
 import {GlobalData} from "@/components/Container";
 import {useAutoScroll} from "@/hooks/useAutoScroll";
+import TimeScale from "@/components/ScheduleContainer/components/TimeScale";
 
 const ScheduleContainer: React.FC<ScheduleContainerType> = ({
   scheduleRender,
@@ -122,33 +123,6 @@ const ScheduleContainer: React.FC<ScheduleContainerType> = ({
     [scheduleList, scheduleRender, containerWidth],
   );
 
-  // 左侧时间刻度
-  const memo_TimeScale: JSX.Element = useMemo(
-    () => (
-      <div
-        className={style.WT_Calendar_scale}
-        style={{ height: `${HoursList.length * 30}px`, top: scrollHeight }}
-      >
-        <div style={{ position: 'relative' }}>
-          {HoursList.map((h, index) => (
-            <div className={style.WT_Calendar_scale_item} key={index}>
-              <span className={style.WT_Calendar_scale_text} style={{ top: index === 0 && -5 }}>
-                {`${h < 10 ? `0${h}` : h}:00`}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-    ),
-    [scrollHeight],
-  );
-
-  // 拖动时间基线
-  const movingBaseLine: JSX.Element = useMemo(
-    () => <MovingBaseLine movingTop={movingTop} scrollHeight={scrollHeight} isShow={isMoving} />,
-    [movingTop, scrollHeight, isMoving],
-  );
-
   const isShowCurrTimeLine: (params: number) => boolean = (params) =>
     getZeroTime(params) <= new Date().getTime() &&
     new Date().getTime() < getZeroTime(params + 3600 * 24 * 1000);
@@ -162,9 +136,9 @@ const ScheduleContainer: React.FC<ScheduleContainerType> = ({
       style={{ height: `${height - 155}px` }}
     >
       <>
-        {memo_TimeScale}
+        <TimeScale HoursList={HoursList} scrollHeight={scrollHeight}/>
         {memo_ScheduleItem}
-        {movingBaseLine}
+        <MovingBaseLine movingTop={movingTop} scrollHeight={scrollHeight} isShow={isMoving} />
         {isShowCurrTimeLine(targetDay) && (
           <div
             className={style.WT_Calendar_ScheduleContainer_currTimeLine}

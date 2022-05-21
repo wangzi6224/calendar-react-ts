@@ -1,7 +1,7 @@
 import React, {Fragment, useContext, useRef} from 'react';
 import style from './index.less';
 import moment from 'moment';
-import type { ScheduleItemType } from '@/data.d';
+import type {dataType, ScheduleItemType} from '@/data.d';
 import {GlobalData} from "@/components/Container";
 
 let isClick = false;
@@ -32,34 +32,44 @@ const ScheduleItem: React.FC<ScheduleItemType> = ({
     width === 0 || dataItemLength * width < 347 ? '100%' : `${d * w}px`;
   const ref = useRef<HTMLDivElement>();
 
-  const onMouseDown = (e) => {
-    const targetEle = ref.current;
-    initMouseTop = e.clientY;
-    targetEle.style.position = 'absolute';
-    targetEle.style.top = `${document.getElementById(id).offsetTop + targetEle.offsetTop}px`;
-    initOffsetTop = targetEle.offsetTop;
-    isClick = true;
-    setIsMoving(true);
-    document.body.addEventListener('mousemove', onMouseMove);
-    document.body.addEventListener('mouseup', onMouseUp);
+  // 按下鼠标
+  const mouseDownHandle = (e, index) => {
+    if (!isDraggable) return;
+    e.persist();
+    timeId = setTimeout(() => {
+      dataIndex = index;
+      const targetEle = ref.current;
+      initMouseTop = e.clientY;
+      targetEle.style.position = 'absolute';
+      targetEle.style.top = `${document.getElementById(id).offsetTop + targetEle.offsetTop}px`;
+      initOffsetTop = targetEle.offsetTop;
+      isClick = true;
+      setIsMoving(true);
+      document.body.addEventListener('mousemove', onMouseMove);
+      document.body.addEventListener('mouseup', mouseUpHandle);
+    }, 200);
   };
 
+  // 移动鼠标
   const onMouseMove = (e) => {
     try {
-      if (isClick) {
-        const targetEle = ref.current;
-        const currMouseOffset = e.clientY - initMouseTop;
-        targetEle.style.top = `${
-          initOffsetTop + currMouseOffset <= 0 ? 0 : initOffsetTop + currMouseOffset
-        }px`;
-        setMovingTop(initOffsetTop + currMouseOffset === 0 ? 0 : initOffsetTop + currMouseOffset);
-      }
+      requestAnimationFrame(() => {
+        if (isClick) {
+          const targetEle = ref.current;
+          const currMouseOffset = e.clientY - initMouseTop;
+          targetEle.style.top = `${
+            initOffsetTop + currMouseOffset <= 0 ? 0 : initOffsetTop + currMouseOffset
+          }px`;
+          setMovingTop(initOffsetTop + currMouseOffset === 0 ? 0 : initOffsetTop + currMouseOffset);
+        }
+      })
     } catch (err) {
       console.log(err);
     }
   };
 
-  const onMouseUp = () => {
+  // 抬起鼠标
+  const mouseUpHandle = () => {
     try {
       if (isClick) {
         setIsMoving(false);
@@ -76,11 +86,16 @@ const ScheduleItem: React.FC<ScheduleItemType> = ({
         onSlideChange([currentTimeStamp, currentTimeStamp + timeDiff], dataItem[dataIndex]);
       }
       document.body.removeEventListener('mousemove', onMouseMove);
-      document.body.removeEventListener('mouseup', onMouseUp);
+      document.body.removeEventListener('mouseup', mouseUpHandle);
     } catch (err) {
       console.log(err);
     }
   };
+
+  const timeRangeShow = (params: dataType):boolean => (
+    params[rangeStartAndEndKey[0]] >= timestampRange[0] &&
+    params[rangeStartAndEndKey[0]] < timestampRange[1]
+  )
 
   return (
     <div id={id} className={style.WT_Calendar_ScheduleItem_Fath}>
@@ -91,25 +106,18 @@ const ScheduleItem: React.FC<ScheduleItemType> = ({
         {dataItem?.map((data, index) => {
           return (
             <Fragment key={`${data[rangeStartAndEndKey[0]]}${index}`}>
-              {data[rangeStartAndEndKey[0]] >= timestampRange[0] &&
-                data[rangeStartAndEndKey[0]] < timestampRange[1] && (
+              {timeRangeShow(data) && (
                   <div
                     ref={ref}
                     key={`${data[rangeStartAndEndKey[0]]}${index}`}
                     id={`${data[rangeStartAndEndKey[0]]}${index}`}
-                    onMouseDown={(e) => {
-                      if (!isDraggable) return;
-                      e.persist();
-                      timeId = setTimeout(() => {
-                        dataIndex = index;
-                        onMouseDown(e);
-                      }, 200);
-                    }}
+                    onMouseDown={(ev) => mouseDownHandle(ev, index)}
                     onMouseUp={() => {
-                      if (!isDraggable) return;
-                      clearTimeout(timeId);
+                      if(isDraggable) {
+                        clearTimeout(timeId);
+                      }
                     }}
-                    className={`${style.WT_Calendar_ScheduleItem_container} WT_Calendar_ScheduleItem_container`}
+                    className={`${style.WT_Calendar_ScheduleItem_container}`}
                     style={{
                       height: `${
                         calcHeight([data[rangeStartAndEndKey[0]], data[rangeStartAndEndKey[1]]]) ||
