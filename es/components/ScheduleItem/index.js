@@ -7,6 +7,7 @@ var initMouseTop = 0;
 var initOffsetTop = 0;
 var dataIndex = null;
 var timeId = null;
+var containerInitHeight = 0;
 
 var ScheduleItem = function ScheduleItem(_ref) {
   var timestampRange = _ref.timestampRange,
@@ -15,14 +16,14 @@ var ScheduleItem = function ScheduleItem(_ref) {
       width = _ref.width,
       dataItemLength = _ref.dataItemLength,
       id = _ref.id,
-      onSlideChange = _ref.onSlideChange,
       setIsMoving = _ref.setIsMoving,
       setMovingTop = _ref.setMovingTop,
       rangeStartAndEndKey = _ref.rangeStartAndEndKey;
 
   var _useContext = useContext(GlobalData),
       targetDay = _useContext.targetDay,
-      isDraggable = _useContext.isDraggable; // 计算容器高度
+      isDraggable = _useContext.isDraggable,
+      changeScheduleDataHandle = _useContext.changeScheduleDataHandle; // 计算容器高度
 
 
   var calcHeight = function calcHeight(timestampList) {
@@ -38,34 +39,43 @@ var ScheduleItem = function ScheduleItem(_ref) {
     return width === 0 || dataItemLength * width < 347 ? '100%' : d * w + "px";
   };
 
-  var ref = useRef();
+  var ref = useRef(); // 按下鼠标
 
-  var _onMouseDown = function onMouseDown(e) {
-    var targetEle = ref.current;
-    initMouseTop = e.clientY;
-    targetEle.style.position = 'absolute';
-    targetEle.style.top = document.getElementById(id).offsetTop + targetEle.offsetTop + "px";
-    initOffsetTop = targetEle.offsetTop;
-    isClick = true;
-    setIsMoving(true);
-    document.body.addEventListener('mousemove', onMouseMove);
-    document.body.addEventListener('mouseup', onMouseUp);
-  };
+  var mouseDownHandle = function mouseDownHandle(e, index) {
+    if (!isDraggable) return;
+    e.persist();
+    timeId = setTimeout(function () {
+      dataIndex = index;
+      var targetEle = ref.current;
+      initMouseTop = e.clientY;
+      targetEle.style.position = 'absolute';
+      targetEle.style.top = document.getElementById(id).offsetTop + targetEle.offsetTop + "px";
+      initOffsetTop = targetEle.offsetTop;
+      isClick = true;
+      setIsMoving(true);
+      document.body.addEventListener('mousemove', onMouseMove);
+      document.body.addEventListener('mouseup', mouseUpHandle);
+    }, 200);
+  }; // 移动鼠标
+
 
   var onMouseMove = function onMouseMove(e) {
     try {
-      if (isClick) {
-        var targetEle = ref.current;
-        var currMouseOffset = e.clientY - initMouseTop;
-        targetEle.style.top = (initOffsetTop + currMouseOffset <= 0 ? 0 : initOffsetTop + currMouseOffset) + "px";
-        setMovingTop(initOffsetTop + currMouseOffset === 0 ? 0 : initOffsetTop + currMouseOffset);
-      }
+      requestAnimationFrame(function () {
+        if (isClick) {
+          var targetEle = ref.current;
+          var currMouseOffset = e.clientY - initMouseTop;
+          targetEle.style.top = (initOffsetTop + currMouseOffset <= 0 ? 0 : initOffsetTop + currMouseOffset) + "px";
+          setMovingTop(initOffsetTop + currMouseOffset === 0 ? 0 : initOffsetTop + currMouseOffset);
+        }
+      });
     } catch (err) {
       console.log(err);
     }
-  };
+  }; // 抬起鼠标
 
-  var onMouseUp = function onMouseUp() {
+
+  var mouseUpHandle = function mouseUpHandle() {
     try {
       if (isClick) {
         setIsMoving(false);
@@ -73,14 +83,47 @@ var ScheduleItem = function ScheduleItem(_ref) {
         var targetEle = ref.current;
         var currentTimeStamp = moment(moment(targetDay).format('YYYY-MM-DD') + " " + Math.floor(targetEle.offsetTop / 30) + ":" + Math.floor(targetEle.offsetTop / 30 * 60 % 60) + ":00").unix() * 1000;
         var timeDiff = dataItem[dataIndex][rangeStartAndEndKey[1]] - dataItem[dataIndex][rangeStartAndEndKey[0]];
-        onSlideChange([currentTimeStamp, currentTimeStamp + timeDiff], dataItem[dataIndex]);
+        changeScheduleDataHandle([currentTimeStamp, currentTimeStamp + timeDiff], dataItem[dataIndex]);
       }
 
       document.body.removeEventListener('mousemove', onMouseMove);
-      document.body.removeEventListener('mouseup', onMouseUp);
+      document.body.removeEventListener('mouseup', mouseUpHandle);
     } catch (err) {
       console.log(err);
     }
+  };
+
+  var timeRangeShow = function timeRangeShow(params) {
+    return params[rangeStartAndEndKey[0]] >= timestampRange[0] && params[rangeStartAndEndKey[0]] < timestampRange[1];
+  };
+
+  var changeRangeMouseMove = function changeRangeMouseMove(ev) {
+    requestAnimationFrame(function () {
+      var currMouseOffset = ev.clientY - initMouseTop;
+      ref.current.style.height = containerInitHeight + currMouseOffset + "px";
+    });
+  };
+
+  var getHeightAttrNumber = function getHeightAttrNumber(height) {
+    return +height.replace(/[^\d.-]/g, '');
+  };
+
+  var rangeChangeHandle = function rangeChangeHandle(ev, data, index) {
+    ev.stopPropagation();
+    dataIndex = index;
+    initMouseTop = ev.clientY;
+    containerInitHeight = getHeightAttrNumber(ref.current.style.height);
+    document.body.addEventListener('mousemove', changeRangeMouseMove);
+    document.body.addEventListener('mouseup', rangeChangeMouseUp);
+  };
+
+  var rangeChangeMouseUp = function rangeChangeMouseUp() {
+    var targetEle = ref.current;
+    var currentTimeStamp = moment(moment(targetDay).format('YYYY-MM-DD') + " " + Math.floor(targetEle.offsetTop / 30) + ":" + Math.floor(targetEle.offsetTop / 30 * 60 % 60) + ":00").unix() * 1000;
+    var containerHeight = getHeightAttrNumber(ref.current.style.height);
+    changeScheduleDataHandle([currentTimeStamp, currentTimeStamp + containerHeight * 2 * 60 * 1000], dataItem[dataIndex]);
+    document.body.removeEventListener('mousemove', changeRangeMouseMove);
+    document.body.removeEventListener('mouseup', rangeChangeMouseUp);
   };
 
   return /*#__PURE__*/React.createElement("div", {
@@ -94,24 +137,19 @@ var ScheduleItem = function ScheduleItem(_ref) {
   }, dataItem == null ? void 0 : dataItem.map(function (data, index) {
     return /*#__PURE__*/React.createElement(Fragment, {
       key: "" + data[rangeStartAndEndKey[0]] + index
-    }, data[rangeStartAndEndKey[0]] >= timestampRange[0] && data[rangeStartAndEndKey[0]] < timestampRange[1] && /*#__PURE__*/React.createElement("div", {
+    }, timeRangeShow(data) && /*#__PURE__*/React.createElement("div", {
       ref: ref,
       key: "" + data[rangeStartAndEndKey[0]] + index,
       id: "" + data[rangeStartAndEndKey[0]] + index,
-      onMouseDown: function onMouseDown(e) {
-        if (!isDraggable) return;
-        e.persist();
-        timeId = setTimeout(function () {
-          dataIndex = index;
-
-          _onMouseDown(e);
-        }, 200);
+      onMouseDown: function onMouseDown(ev) {
+        return mouseDownHandle(ev, index);
       },
       onMouseUp: function onMouseUp() {
-        if (!isDraggable) return;
-        clearTimeout(timeId);
+        if (isDraggable) {
+          clearTimeout(timeId);
+        }
       },
-      className: style.WT_Calendar_ScheduleItem_container + " WT_Calendar_ScheduleItem_container",
+      className: "" + style.WT_Calendar_ScheduleItem_container,
       style: {
         height: (calcHeight([data[rangeStartAndEndKey[0]], data[rangeStartAndEndKey[1]]]) || 30) + "px",
         top: calcTop(data[rangeStartAndEndKey[0]])
@@ -119,6 +157,12 @@ var ScheduleItem = function ScheduleItem(_ref) {
     }, scheduleRender({
       data: data,
       timestampRange: timestampRange
+    }), /*#__PURE__*/React.createElement("div", {
+      onMouseDown: function onMouseDown(ev) {
+        rangeChangeHandle(ev, data, index);
+      },
+      onMouseUp: rangeChangeMouseUp,
+      className: style.WT_Calendar_ScheduleItem_bottomLine
     })));
   })));
 };

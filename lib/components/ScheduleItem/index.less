@@ -23,12 +23,15 @@
   box-sizing: border-box;
   margin: 0 2px;
   padding: 0;
-  overflow: hidden;
+  //overflow: hidden;
   font-size: 12px;
   background: rgba(215, 242, 255, 50%);
   border-top: 2px solid #1890ff;
   border-bottom: 2px solid #1890ff;
   user-select: none;
+  &:hover{
+    box-shadow: 0 0 4px rgb(0 0 0 / 40%);
+  }
 }
 
 .WT_Calendar_ScheduleItem_scale {
@@ -36,4 +39,15 @@
   top: 18px;
   left: -35px;
   z-index: 10;
+}
+
+.WT_Calendar_ScheduleItem_bottomLine {
+  bottom: -2px;
+  height: 4px;
+  width: 100%;
+  position: absolute;
+  cursor: row-resize;
+  &:hover {
+    border-bottom: 4px solid #5db0cc;
+  }
 }
