@@ -29,8 +29,12 @@
   border-top: 2px solid #1890ff;
   border-bottom: 2px solid #1890ff;
   user-select: none;
-  &:hover{
+  cursor: grab;
+  &:active{
     box-shadow: 0 0 4px rgb(0 0 0 / 40%);
+  }
+  &:active {
+    cursor: grabbing;
   }
 }
 
