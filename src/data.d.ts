@@ -77,7 +77,7 @@ export type DailyOptionsType = {
   setSwitchWeekendDay: React.Dispatch<'day' | 'week'>;
 };
 
-export type ScheduleCantainerType = {
+export type ScheduleContainerType = {
   data?: dataType[];
   scheduleRender?: ({
     data: dataType,

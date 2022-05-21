@@ -1,6 +1,6 @@
 import React, {createContext, useState} from 'react';
 import style from './index.less';
-import ScheduleCantainer from '@/components/ScheduleCantainer';
+import ScheduleContainer from '@/components/ScheduleContainer';
 import CalendarHeader from '@/components/CalendarHeader';
 import type { ContainerType } from '@/data.d';
 
@@ -46,7 +46,7 @@ const Container: React.FC<ContainerType> = ({
     }}>
       <div className={style.WT_Calendar_Container}>
         <CalendarHeader businessRender={businessRender}/>
-        <ScheduleCantainer
+        <ScheduleContainer
           data={data}
           onSlideChange={onSlideChange}
           scheduleRender={scheduleRender}

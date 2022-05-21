@@ -1,5 +1,5 @@
 import React from 'react';
-import style from '@/components/ScheduleCantainer/index.less';
+import style from '@/components/ScheduleContainer/index.less';
 
 type MovingBaseLineType = {
   movingTop: number;

@@ -3,11 +3,12 @@ import style from './index.less';
 import React, {useContext, useEffect, useMemo, useState} from 'react';
 import { getDay, getMonth, getYear, getZeroTime } from '@/utils';
 import ScheduleItem from '@/components/ScheduleItem';
-import MovingBaseLine from '@/components/ScheduleCantainer/MovingBaseLine';
-import type { ScheduleCantainerType, HourType, scheduleListType } from '@/data.d';
+import MovingBaseLine from '@/components/ScheduleContainer/MovingBaseLine';
+import type { ScheduleContainerType, HourType, scheduleListType } from '@/data.d';
 import {GlobalData} from "@/components/Container";
+import {useAutoScroll} from "@/hooks/useAutoScroll";
 
-const ScheduleCantainer: React.FC<ScheduleCantainerType> = ({
+const ScheduleContainer: React.FC<ScheduleContainerType> = ({
   scheduleRender,
   data,
   onSlideChange,
@@ -50,7 +51,6 @@ const ScheduleCantainer: React.FC<ScheduleCantainerType> = ({
   const [containerWidth, setContainerWidth] = useState<number>(0);
   const [isMoving, setIsMoving] = useState<boolean>(false);
   const [movingTop, setMovingTop] = useState<number>(0);
-  const [autoPositionTime] = useState(targetDay);
 
   useEffect(() => {
     // 当前时间线计时器
@@ -64,10 +64,10 @@ const ScheduleCantainer: React.FC<ScheduleCantainerType> = ({
   }, []);
 
   useEffect(() => {
-    const resule = [];
+    const result = [];
     const todayTime: number = getZeroTime(targetDay) as number;
     for (let i = 0; i < HoursList.length; i++) {
-      resule.push({
+      result.push({
         timestampRange: [todayTime + i * 3600 * 1000, todayTime + (i + 1) * 3600 * 1000],
         dataItem: data?.filter((item) => {
           return (
@@ -77,12 +77,10 @@ const ScheduleCantainer: React.FC<ScheduleCantainerType> = ({
         }),
       });
     }
-    const scrollTimeID: NodeJS.Timeout = autoPositonScrollHandle();
-    setScheduleList(resule);
-    return () => {
-      clearTimeout(scrollTimeID);
-    };
+    setScheduleList(result);
   }, [data, targetDay]);
+
+  useAutoScroll(targetDay, height)
 
   useEffect(() => {
     const containerList = document.getElementsByClassName(`WT_Calendar_ScheduleItem_container`);
@@ -93,32 +91,13 @@ const ScheduleCantainer: React.FC<ScheduleCantainerType> = ({
     }
   }, [scheduleList, scheduleRender, targetDay]);
 
-  // 自动滚动到定位的日程
-  const autoPositonScrollHandle: () => NodeJS.Timeout = () => {
-    return setTimeout(() => {
-      try {
-        const scrollContainerEle = document.getElementById('WT_Calendar_ScheduleCantainer_inner');
-        const PositionTime: number =
-          moment(
-            `${getYear(autoPositionTime)}/${getMonth(autoPositionTime)}/${getDay(
-              autoPositionTime,
-            )} ${moment(autoPositionTime).hour()}:00:00`,
-          ).unix() * 1000;
-        scrollContainerEle.scrollTop =
-          document.getElementById(`${PositionTime}`)?.offsetTop - height / 3;
-      } catch (err) {
-        console.log('自动滚动报错---->', err);
-      }
-    }, 20);
-  };
-
   // 日程组件Item
   const memo_ScheduleItem: JSX.Element = useMemo(
     () => (
       <div
-        id="WT_Calendar_ScheduleCantainer_inner"
+        id="WT_Calendar_ScheduleContainer_inner"
         onScroll={(e) => setScrollHeight(-(e as any).target?.scrollTop)}
-        className={style.WT_Calendar_ScheduleCantainer_inner}
+        className={style.WT_Calendar_ScheduleContainer_inner}
       >
         {scheduleList?.map((item, index) => (
           <ScheduleItem
@@ -179,7 +158,7 @@ const ScheduleCantainer: React.FC<ScheduleCantainerType> = ({
 
   return (
     <div
-      className={style.WT_Calendar_ScheduleCantainer_outer}
+      className={style.WT_Calendar_ScheduleContainer_outer}
       style={{ height: `${height - 155}px` }}
     >
       <>
@@ -188,10 +167,10 @@ const ScheduleCantainer: React.FC<ScheduleCantainerType> = ({
         {movingBaseLine}
         {isShowCurrTimeLine(targetDay) && (
           <div
-            className={style.WT_Calendar_ScheduleCantainer_currTimeLine}
+            className={style.WT_Calendar_ScheduleContainer_currTimeLine}
             style={{ top: `${currTimeLineHeight + scrollHeight}px` }}
           >
-            <div className={style.WT_Calendar_ScheduleCantainer_startPoint} />
+            <div className={style.WT_Calendar_ScheduleContainer_startPoint} />
           </div>
         )}
       </>
@@ -199,4 +178,4 @@ const ScheduleCantainer: React.FC<ScheduleCantainerType> = ({
   );
 };
 
-export default ScheduleCantainer;
+export default ScheduleContainer;
