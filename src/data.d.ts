@@ -83,7 +83,6 @@ export type ScheduleContainerType = {
     data: dataType,
     timestampRange: timestampRange,
   }) => JSX.Element;
-  onSlideChange?: (currTimestamp: [number, number], data: dataType) => void;
   rangeStartAndEndKey?: [string, string];
 };
 
@@ -103,7 +102,6 @@ export type ScheduleItemType = {
   dataItemLength: number;
   id: string;
   setIsMoving: React.Dispatch<boolean>;
-  onSlideChange?: (currTimestamp: [number, number], data: dataType) => void;
   setMovingTop: React.Dispatch<number>;
   rangeStartAndEndKey?: [string, string];
 };

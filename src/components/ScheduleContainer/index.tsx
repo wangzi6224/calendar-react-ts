@@ -12,7 +12,6 @@ import TimeScale from "@/components/ScheduleContainer/components/TimeScale";
 const ScheduleContainer: React.FC<ScheduleContainerType> = ({
   scheduleRender,
   data,
-  onSlideChange,
   rangeStartAndEndKey,
 }) => {
   const {targetDay, height} = useContext(GlobalData);
@@ -105,7 +104,6 @@ const ScheduleContainer: React.FC<ScheduleContainerType> = ({
             rangeStartAndEndKey={rangeStartAndEndKey}
             setMovingTop={setMovingTop}
             setIsMoving={setIsMoving}
-            onSlideChange={onSlideChange}
             id={`${item.timestampRange[0]}`}
             width={containerWidth === 0 ? 0 : containerWidth + 4}
             key={index}
@@ -138,7 +136,9 @@ const ScheduleContainer: React.FC<ScheduleContainerType> = ({
       <>
         <TimeScale HoursList={HoursList} scrollHeight={scrollHeight}/>
         {memo_ScheduleItem}
-        <MovingBaseLine movingTop={movingTop} scrollHeight={scrollHeight} isShow={isMoving} />
+        {
+          isMoving && <MovingBaseLine movingTop={movingTop} scrollHeight={scrollHeight} color="#1890ff" />
+        }
         {isShowCurrTimeLine(targetDay) && (
           <div
             className={style.WT_Calendar_ScheduleContainer_currTimeLine}

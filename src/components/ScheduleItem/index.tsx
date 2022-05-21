@@ -9,6 +9,7 @@ let initMouseTop = 0;
 let initOffsetTop = 0;
 let dataIndex: number = null;
 let timeId = null;
+let containerInitHeight = 0;
 
 const ScheduleItem: React.FC<ScheduleItemType> = ({
   timestampRange,
@@ -17,12 +18,11 @@ const ScheduleItem: React.FC<ScheduleItemType> = ({
   width,
   dataItemLength,
   id,
-  onSlideChange,
   setIsMoving,
   setMovingTop,
   rangeStartAndEndKey,
 }) => {
-  const {targetDay, isDraggable} = useContext(GlobalData);
+  const {targetDay, isDraggable, changeScheduleDataHandle} = useContext(GlobalData);
   // 计算容器高度
   const calcHeight: (timestampList: [number, number]) => number = (timestampList) =>
     timestampList.length > 1 ? (timestampList[1] - timestampList[0]) / 1000 / 60 / 2 : 30;
@@ -83,7 +83,7 @@ const ScheduleItem: React.FC<ScheduleItemType> = ({
           ).unix() * 1000;
         const timeDiff =
           dataItem[dataIndex][rangeStartAndEndKey[1]] - dataItem[dataIndex][rangeStartAndEndKey[0]];
-        onSlideChange([currentTimeStamp, currentTimeStamp + timeDiff], dataItem[dataIndex]);
+        changeScheduleDataHandle([currentTimeStamp, currentTimeStamp + timeDiff], dataItem[dataIndex]);
       }
       document.body.removeEventListener('mousemove', onMouseMove);
       document.body.removeEventListener('mouseup', mouseUpHandle);
@@ -95,7 +95,41 @@ const ScheduleItem: React.FC<ScheduleItemType> = ({
   const timeRangeShow = (params: dataType):boolean => (
     params[rangeStartAndEndKey[0]] >= timestampRange[0] &&
     params[rangeStartAndEndKey[0]] < timestampRange[1]
-  )
+  );
+
+  const changeRangeMouseMove = (ev) => {
+    requestAnimationFrame(() => {
+      const currMouseOffset = ev.clientY - initMouseTop;
+      ref.current.style.height = `${containerInitHeight + currMouseOffset}px`
+    })
+  };
+
+  const getHeightAttrNumber = (height: string): number => {
+    return +height.replace(/[^\d.-]/g, '')
+  };
+
+  const rangeChangeHandle = (ev, data, index) => {
+    ev.stopPropagation();
+    dataIndex = index;
+    initMouseTop = ev.clientY;
+    containerInitHeight = getHeightAttrNumber(ref.current.style.height);
+    document.body.addEventListener('mousemove', changeRangeMouseMove);
+    document.body.addEventListener('mouseup', rangeChangeMouseUp);
+  }
+
+  const rangeChangeMouseUp = () => {
+    const targetEle = ref.current;
+    const currentTimeStamp =
+      moment(
+        `${moment(targetDay).format('YYYY-MM-DD')} ${Math.floor(
+          targetEle.offsetTop / 30,
+        )}:${Math.floor(((targetEle.offsetTop / 30) * 60) % 60)}:00`,
+      ).unix() * 1000;
+    const containerHeight = getHeightAttrNumber(ref.current.style.height);
+    changeScheduleDataHandle([currentTimeStamp, currentTimeStamp + containerHeight * 2 * 60 * 1000], dataItem[dataIndex]);
+    document.body.removeEventListener('mousemove', changeRangeMouseMove);
+    document.body.removeEventListener('mouseup', rangeChangeMouseUp);
+  }
 
   return (
     <div id={id} className={style.WT_Calendar_ScheduleItem_Fath}>
@@ -127,6 +161,13 @@ const ScheduleItem: React.FC<ScheduleItemType> = ({
                     }}
                   >
                     {scheduleRender({ data, timestampRange })}
+                    <div
+                      onMouseDown={(ev) => {
+                        rangeChangeHandle(ev, data, index)
+                      }}
+                      onMouseUp={rangeChangeMouseUp}
+                      className={style.WT_Calendar_ScheduleItem_bottomLine}
+                    />
                   </div>
                 )}
             </Fragment>

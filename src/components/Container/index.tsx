@@ -1,8 +1,8 @@
-import React, {createContext, useState} from 'react';
 import style from './index.less';
-import ScheduleContainer from '@/components/ScheduleContainer';
+import React, {createContext, useState} from 'react';
 import CalendarHeader from '@/components/CalendarHeader';
-import type { ContainerType } from '@/data.d';
+import ScheduleContainer from '@/components/ScheduleContainer';
+import type {ContainerType, dataType, timestampRange} from '@/data.d';
 
 export const GlobalData = createContext<{
   targetDay: number;
@@ -10,7 +10,8 @@ export const GlobalData = createContext<{
   setTargetDay: (timestamp: number) => void;
   setSwitchWeekendDay: React.Dispatch<'day' | 'week'>;
   height: number;
-  isDraggable: boolean
+  isDraggable: boolean;
+  changeScheduleDataHandle: (currTimestamp: timestampRange, data: dataType) => void;
 }>(null)
 
 const Container: React.FC<ContainerType> = ({
@@ -26,13 +27,30 @@ const Container: React.FC<ContainerType> = ({
   rangeStartAndEndKey,
 }) => {
   // 当前选择日期时间戳
-  const [targetDay, setTargetDay] = useState<any>(initDay);
+  const [targetDay, setTargetDay] = useState<number>(initDay);
+  // 日程数据
+  const [scheduleData, setScheduleData] = useState<dataType[]>(data);
   // 切换日和周
   const [switchWeekendDay, setSwitchWeekendDay] = useState<'day' | 'week'>(mode);
 
   const setTargetDayHandle = timestamp => {
     onChange(timestamp);
     setTargetDay(timestamp);
+  }
+
+  const changeScheduleDataHandle = (currTimestamp: timestampRange, data: dataType) => {
+    setScheduleData(
+      scheduleData.map((item) => {
+        if (item.id === data.id) {
+          return {
+            ...item,
+            startTime: currTimestamp[0],
+            endTime: currTimestamp[1],
+          };
+        }
+        return item;
+      }),
+    );
   }
 
   return (
@@ -42,13 +60,13 @@ const Container: React.FC<ContainerType> = ({
       targetDay,
       switchWeekendDay,
       setSwitchWeekendDay,
+      changeScheduleDataHandle,
       setTargetDay: setTargetDayHandle
     }}>
       <div className={style.WT_Calendar_Container}>
         <CalendarHeader businessRender={businessRender}/>
         <ScheduleContainer
-          data={data}
-          onSlideChange={onSlideChange}
+          data={scheduleData}
           scheduleRender={scheduleRender}
           rangeStartAndEndKey={rangeStartAndEndKey}
         />
