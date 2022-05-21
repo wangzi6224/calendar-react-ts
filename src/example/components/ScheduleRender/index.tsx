@@ -3,17 +3,20 @@ import moment from "moment";
 import {dataType, timestampRange} from "@/data";
 
 const ScheduleRender: React.FC<{data: dataType, timestampRange: timestampRange}> = ({data, timestampRange}) => {
+  console.log(data)
   return (
-    <div style={{width: '90px'}}>
-      {
-        timestampRange.map((t, index) => (
-          <div key={t}>
-            {
-              `${moment(t).format('HH:mm:ss')}${index === 1 ? '有会议' : ''}`
-            }
-          </div>
-        ))
-      }
+    <div style={{width: '90px', fontSize: "14px"}}>
+      <span style={{fontSize: "12px"}}>时间范围</span>
+      <div>
+        {
+          moment(data.startTime).format('HH:mm:ss')
+        }
+      </div>
+      <div>
+        {
+          moment(data.endTime).format('HH:mm:ss')
+        }
+      </div>
     </div>
   )
 };

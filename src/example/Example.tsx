@@ -13,7 +13,7 @@ const root = createRoot(container!);
 const initialList = [{
   id:1,
   startTime: Date.now() - 3600 * 1000,
-  endTime: Date.now() + 3600 * 1.5 * 1000,
+  endTime: Date.now() + 3600 * 1000,
 }]
 
 const Example: React.FC = () => {
