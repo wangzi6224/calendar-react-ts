@@ -1,6 +1,6 @@
 {
   "name": "calendar-react-ts",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "a calendar component by react with typescript",
   "main": "es/index.js",
   "scripts": {
