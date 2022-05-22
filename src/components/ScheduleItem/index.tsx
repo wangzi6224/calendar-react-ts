@@ -1,4 +1,4 @@
-import React, {Fragment, useContext, useRef} from 'react';
+import React, {Fragment, useContext, useMemo, useRef} from 'react';
 import style from './index.less';
 import moment from 'moment';
 import type {dataType, ScheduleItemType} from '@/data.d';
@@ -24,13 +24,21 @@ const ScheduleItem: React.FC<ScheduleItemType> = ({
 }) => {
   const {targetDay, isDraggable, changeScheduleDataHandle} = useContext(GlobalData);
   // 计算容器高度
-  const calcHeight: (timestampList: [number, number]) => number = (timestampList) =>
-    timestampList.length > 1 ? (timestampList[1] - timestampList[0]) / 1000 / 60 / 2 : 30;
-  const calcTop: (startTime: number) => number = (startTime) => moment(startTime).minute() / 2;
+  const calcHeight: (timestampList: [number, number]) => number = useMemo(() => {
+    return (timestampList) => {
+      return timestampList.length > 1 ? (timestampList[1] - timestampList[0]) / 1000 / 60 / 2 : 30
+    }
+  }, []);
+  const calcTop: (startTime: number) => number = useMemo(() => {
+    return (startTime) => moment(startTime).minute() / 2
+  }, [])
   // 计算 ScheduleItem 宽度
-  const calcWidth: (w: number, d: number) => string = (w, d) =>
-    width === 0 || dataItemLength * width < 347 ? '100%' : `${d * w}px`;
+  const calcWidth: (w: number, d: number) => string = useMemo(() => {
+    return (w, d) =>
+      width === 0 || dataItemLength * width < 347 ? '100%' : `${d * w}px`
+  }, []);
   const ref = useRef<HTMLDivElement>();
+  const bottomLineRef = useRef<HTMLDivElement>();
 
   // 按下鼠标
   const mouseDownHandle = (e, index) => {
@@ -55,18 +63,34 @@ const ScheduleItem: React.FC<ScheduleItemType> = ({
     try {
       requestAnimationFrame(() => {
         if (isClick) {
+          document.body.addEventListener("mouseleave", onMouseLeaveBodyHandle)
           const targetEle = ref.current;
           const currMouseOffset = e.clientY - initMouseTop;
-          targetEle.style.top = `${
-            initOffsetTop + currMouseOffset <= 0 ? 0 : initOffsetTop + currMouseOffset
-          }px`;
-          setMovingTop(initOffsetTop + currMouseOffset === 0 ? 0 : initOffsetTop + currMouseOffset);
+          let topMoveValue = initOffsetTop + currMouseOffset;
+          const LIMIT: boolean = topMoveValue + getHeightAttrNumber(targetEle.style.height) >= (30 * 24);
+          if(LIMIT) {
+            const MAX_PIXEL: number = (30 * 24) - getHeightAttrNumber(targetEle.style.height);
+            targetEle.style.top = `${MAX_PIXEL}px`;
+            setMovingTop(MAX_PIXEL);
+            return
+          }
+          if(topMoveValue <= 0) {
+            topMoveValue = 0;
+          }
+          targetEle.style.top = `${topMoveValue}px`;
+          setMovingTop(topMoveValue);
         }
       })
     } catch (err) {
       console.log(err);
     }
   };
+
+  const onMouseLeaveBodyHandle = (ev) => {
+    ev.stopPropagation();
+    mouseUpHandle();
+    changeRangeMouseUp();
+  }
 
   // 抬起鼠标
   const mouseUpHandle = () => {
@@ -87,6 +111,7 @@ const ScheduleItem: React.FC<ScheduleItemType> = ({
       }
       document.body.removeEventListener('mousemove', onMouseMove);
       document.body.removeEventListener('mouseup', mouseUpHandle);
+      document.body.removeEventListener('mouseleave', onMouseLeaveBodyHandle);
     } catch (err) {
       console.log(err);
     }
@@ -99,8 +124,20 @@ const ScheduleItem: React.FC<ScheduleItemType> = ({
 
   const changeRangeMouseMove = (ev) => {
     requestAnimationFrame(() => {
+      document.body.addEventListener("mouseleave", onMouseLeaveBodyHandle);
       const currMouseOffset = ev.clientY - initMouseTop;
-      ref.current.style.height = `${containerInitHeight + currMouseOffset}px`
+      const targetEle = ref.current;
+      let resultHeight = containerInitHeight + currMouseOffset;
+      const MIN_HEIGHT = 15;
+      const LIMIT = targetEle.offsetTop + resultHeight >= 30 * 24;
+      if(LIMIT) {
+        targetEle.style.height = `${30 * 24 - targetEle.offsetTop}px`;
+        return;
+      }
+      if(resultHeight <= MIN_HEIGHT) {
+        resultHeight = MIN_HEIGHT;
+      }
+      targetEle.style.height = `${resultHeight}px`;
     })
   };
 
@@ -108,16 +145,16 @@ const ScheduleItem: React.FC<ScheduleItemType> = ({
     return +height.replace(/[^\d.-]/g, '')
   };
 
-  const rangeChangeHandle = (ev, data, index) => {
+  const changeRangeHandle = (ev, data, index) => {
     ev.stopPropagation();
     dataIndex = index;
     initMouseTop = ev.clientY;
     containerInitHeight = getHeightAttrNumber(ref.current.style.height);
     document.body.addEventListener('mousemove', changeRangeMouseMove);
-    document.body.addEventListener('mouseup', rangeChangeMouseUp);
+    document.body.addEventListener('mouseup', changeRangeMouseUp);
   }
 
-  const rangeChangeMouseUp = () => {
+  const changeRangeMouseUp = () => {
     const targetEle = ref.current;
     const currentTimeStamp =
       moment(
@@ -128,7 +165,8 @@ const ScheduleItem: React.FC<ScheduleItemType> = ({
     const containerHeight = getHeightAttrNumber(ref.current.style.height);
     changeScheduleDataHandle([currentTimeStamp, currentTimeStamp + containerHeight * 2 * 60 * 1000], dataItem[dataIndex]);
     document.body.removeEventListener('mousemove', changeRangeMouseMove);
-    document.body.removeEventListener('mouseup', rangeChangeMouseUp);
+    document.body.removeEventListener('mouseup', changeRangeMouseUp);
+    document.body.removeEventListener('mouseleave', onMouseLeaveBodyHandle);
   }
 
   return (
@@ -162,10 +200,11 @@ const ScheduleItem: React.FC<ScheduleItemType> = ({
                   >
                     {scheduleRender({ data, timestampRange })}
                     <div
+                      ref={bottomLineRef}
                       onMouseDown={(ev) => {
-                        rangeChangeHandle(ev, data, index)
+                        changeRangeHandle(ev, data, index)
                       }}
-                      onMouseUp={rangeChangeMouseUp}
+                      onMouseUp={changeRangeMouseUp}
                       className={style.WT_Calendar_ScheduleItem_bottomLine}
                     />
                   </div>

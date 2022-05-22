@@ -136,9 +136,7 @@ const ScheduleContainer: React.FC<ScheduleContainerType> = ({
       <>
         <TimeScale HoursList={HoursList} scrollHeight={scrollHeight}/>
         {memo_ScheduleItem}
-        {
-          isMoving && <MovingBaseLine movingTop={movingTop} scrollHeight={scrollHeight} color="#1890ff" />
-        }
+        <MovingBaseLine movingTop={movingTop} scrollHeight={scrollHeight} color="#1890ff" visibility={isMoving} />
         {isShowCurrTimeLine(targetDay) && (
           <div
             className={style.WT_Calendar_ScheduleContainer_currTimeLine}

@@ -1,31 +1,32 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import style from '@/components/ScheduleContainer/index.less';
 
 type MovingBaseLineType = {
   movingTop: number;
   scrollHeight: number;
   color?: string;
+  visibility: boolean;
 };
 
-const MovingBaseLine: React.FC<MovingBaseLineType> = ({ movingTop, scrollHeight, color }) => {
+const MovingBaseLine: React.FC<MovingBaseLineType> = ({ movingTop, scrollHeight, color, visibility }) => {
 
-  const calcHoursText = () => {
+  const calcHoursText = useMemo(() => {
     const __movingTop = Math.floor(movingTop / 30);
 
     if(__movingTop < 10) {
       return `0${__movingTop <= 0 ? 0 : __movingTop}`
     }
     return __movingTop;
-  };
+  }, [movingTop])
 
-  const calcMinutesText = () => {
+  const calcMinutesText = useMemo(() => {
     const __movingTop = Math.floor(((movingTop / 30) * 60) % 60);
 
     if(__movingTop < 10) {
       return (`0${__movingTop <= 0 ? 0 : __movingTop}`)
     }
     return (__movingTop)
-  }
+  }, [movingTop])
 
   return (
       <div
@@ -33,11 +34,12 @@ const MovingBaseLine: React.FC<MovingBaseLineType> = ({ movingTop, scrollHeight,
           display: movingTop + scrollHeight <= 0 ? 'none' : 'block',
           top: movingTop + scrollHeight <= 0 ? 0 : movingTop + scrollHeight,
           borderTop: `2px dashed ${color}`,
+          visibility: visibility ? 'visible' : 'hidden'
         }}
         className={style.WT_Calendar_ScheduleItem_CursorLine}
       >
         <div style={{color}} className={style.WT_Calendar_ScheduleItem_timeText}>
-          {`${calcHoursText()}:${calcMinutesText()}`}
+          {`${calcHoursText}:${calcMinutesText}`}
         </div>
       </div>
   );
