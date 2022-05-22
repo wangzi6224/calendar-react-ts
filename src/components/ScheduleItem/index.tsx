@@ -3,6 +3,7 @@ import style from './index.less';
 import moment from 'moment';
 import type {dataType, ScheduleItemType} from '@/data.d';
 import {GlobalData} from "@/components/Container";
+import {addEvent, rmEvent} from "@/utils";
 
 let isClick = false;
 let initMouseTop = 0;
@@ -53,8 +54,8 @@ const ScheduleItem: React.FC<ScheduleItemType> = ({
       initOffsetTop = targetEle.offsetTop;
       isClick = true;
       setIsMoving(true);
-      document.body.addEventListener('mousemove', onMouseMove);
-      document.body.addEventListener('mouseup', mouseUpHandle);
+      addEvent({evType:'mousemove', handle: onMouseMove});
+      addEvent({evType: 'mouseup', handle: mouseUpHandle});
     }, 200);
   };
 
@@ -63,7 +64,7 @@ const ScheduleItem: React.FC<ScheduleItemType> = ({
     try {
       requestAnimationFrame(() => {
         if (isClick) {
-          document.body.addEventListener("mouseleave", onMouseLeaveBodyHandle)
+          addEvent({evType: "mouseleave", handle: onMouseLeaveBodyHandle})
           const targetEle = ref.current;
           const currMouseOffset = e.clientY - initMouseTop;
           let topMoveValue = initOffsetTop + currMouseOffset;
@@ -109,9 +110,9 @@ const ScheduleItem: React.FC<ScheduleItemType> = ({
           dataItem[dataIndex][rangeStartAndEndKey[1]] - dataItem[dataIndex][rangeStartAndEndKey[0]];
         changeScheduleDataHandle([currentTimeStamp, currentTimeStamp + timeDiff], dataItem[dataIndex]);
       }
-      document.body.removeEventListener('mousemove', onMouseMove);
-      document.body.removeEventListener('mouseup', mouseUpHandle);
-      document.body.removeEventListener('mouseleave', onMouseLeaveBodyHandle);
+      rmEvent({evType: 'mousemove', handle: onMouseMove});
+      rmEvent({evType: 'mouseup', handle: mouseUpHandle});
+      rmEvent({evType: 'mouseleave', handle: onMouseLeaveBodyHandle});
     } catch (err) {
       console.log(err);
     }
@@ -124,20 +125,29 @@ const ScheduleItem: React.FC<ScheduleItemType> = ({
 
   const changeRangeMouseMove = (ev) => {
     requestAnimationFrame(() => {
-      document.body.addEventListener("mouseleave", onMouseLeaveBodyHandle);
-      const currMouseOffset = ev.clientY - initMouseTop;
+      addEvent({
+        evType: "mouseleave", handle: onMouseLeaveBodyHandle
+      });
       const targetEle = ref.current;
-      let resultHeight = containerInitHeight + currMouseOffset;
+      const currMouseOffset = ev.clientY - initMouseTop;
+      let __resultHeight__ = containerInitHeight + currMouseOffset;
+
       const MIN_HEIGHT = 15;
-      const LIMIT = targetEle.offsetTop + resultHeight >= 30 * 24;
-      if(LIMIT) {
-        targetEle.style.height = `${30 * 24 - targetEle.offsetTop}px`;
+      const MAX_HEIGHT = 30 * 24 - targetEle.offsetTop;
+      const MIN_LIMIT = __resultHeight__ <= MIN_HEIGHT;
+      const MAX_LIMIT = (targetEle.offsetTop + __resultHeight__) >= 30 * 24;
+
+      if(MAX_LIMIT) {
+        targetEle.style.height = `${MAX_HEIGHT}px`;
         return;
       }
-      if(resultHeight <= MIN_HEIGHT) {
-        resultHeight = MIN_HEIGHT;
+
+      if(MIN_LIMIT) {
+        targetEle.style.height = `${MIN_HEIGHT}px`;
+        return;
       }
-      targetEle.style.height = `${resultHeight}px`;
+
+      targetEle.style.height = `${__resultHeight__}px`;
     })
   };
 
@@ -150,8 +160,8 @@ const ScheduleItem: React.FC<ScheduleItemType> = ({
     dataIndex = index;
     initMouseTop = ev.clientY;
     containerInitHeight = getHeightAttrNumber(ref.current.style.height);
-    document.body.addEventListener('mousemove', changeRangeMouseMove);
-    document.body.addEventListener('mouseup', changeRangeMouseUp);
+    addEvent({evType: 'mousemove', handle: changeRangeMouseMove});
+    addEvent({evType: 'mouseup', handle: changeRangeMouseUp});
   }
 
   const changeRangeMouseUp = () => {
@@ -164,9 +174,9 @@ const ScheduleItem: React.FC<ScheduleItemType> = ({
       ).unix() * 1000;
     const containerHeight = getHeightAttrNumber(ref.current.style.height);
     changeScheduleDataHandle([currentTimeStamp, currentTimeStamp + containerHeight * 2 * 60 * 1000], dataItem[dataIndex]);
-    document.body.removeEventListener('mousemove', changeRangeMouseMove);
-    document.body.removeEventListener('mouseup', changeRangeMouseUp);
-    document.body.removeEventListener('mouseleave', onMouseLeaveBodyHandle);
+    rmEvent({evType: 'mousemove', handle: changeRangeMouseMove});
+    rmEvent({evType: 'mouseup', handle: changeRangeMouseUp});
+    rmEvent({evType: 'mouseleave', handle: onMouseLeaveBodyHandle});
   }
 
   return (
