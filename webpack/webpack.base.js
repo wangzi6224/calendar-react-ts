@@ -9,7 +9,7 @@ const os = require("os");
 const distDir = path.join(__dirname, '../dist')
 
 module.exports = {
-  entry: path.join(__dirname, '../src/index.tsx'),
+  entry: path.join(__dirname, '../src/scheduleRender.tsx'),
   output: {
     path: distDir,
     filename: `${name}.min.js`

@@ -8,18 +8,18 @@ const WeeklyOptions: React.FC<WeeklyOptionsType> = ({ dateTextList }) => {
   const {targetDay, setTargetDay, switchWeekendDay} = useContext(GlobalData);
 
   return (
-    <div className={style.WT_Calendar_WeeklyOptions}>
+    <div className={style.Calendar_WeeklyOptions}>
       {/* 星期写死, 平滑的切换日期, 就不用计算了 */}
-      <div className={style.WT_Calendar_WeeklyOptions_weekText}>
+      <div className={style.Calendar_WeeklyOptions_weekText}>
         {['一', '二', '三', '四', '五', '六', '日'].map((w, index) => (
-          <div className={style.WT_Calendar_WeeklyOptions_weekItem} key={index}>
+          <div className={style.Calendar_WeeklyOptions_weekItem} key={index}>
             星期{w}
           </div>
         ))}
       </div>
 
       {/* 日期 */}
-      <div className={style.WT_Calendar_WeeklyOptions_DateText}>
+      <div className={style.Calendar_WeeklyOptions_DateText}>
         {/* @ts-ignore */}
         {dateTextList.map((d, index) => {
           return (
@@ -33,8 +33,8 @@ const WeeklyOptions: React.FC<WeeklyOptionsType> = ({ dateTextList }) => {
                       new Date().getTime(),
                     )}` && 'red',
               }}
-              className={`${style.WT_Calendar_WeeklyOptions_DateItem} ${
-                d === targetDay && style.WT_Calendar_WeeklyOptions_DateItem_active
+              className={`${style.Calendar_WeeklyOptions_DateItem} ${
+                d === targetDay && style.Calendar_WeeklyOptions_DateItem_active
               }`}
             >
               {getDay(d)}

@@ -83,7 +83,7 @@ const ScheduleContainer: React.FC<ScheduleContainerType> = ({
   useAutoScroll(targetDay, height)
 
   useEffect(() => {
-    const containerList = document.getElementsByClassName(`WT_Calendar_ScheduleItem_container`);
+    const containerList = document.getElementsByClassName(`Calendar_ScheduleItem_container`);
     if (containerList[0]) {
       setContainerWidth(containerList[0]?.clientWidth);
     } else {
@@ -95,9 +95,9 @@ const ScheduleContainer: React.FC<ScheduleContainerType> = ({
   const memo_ScheduleItem: JSX.Element = useMemo(
     () => (
       <div
-        id="WT_Calendar_ScheduleContainer_inner"
+        id="Calendar_ScheduleContainer_inner"
         onScroll={(e) => setScrollHeight(-(e as any).target?.scrollTop)}
-        className={style.WT_Calendar_ScheduleContainer_inner}
+        className={style.Calendar_ScheduleContainer_inner}
       >
         {scheduleList?.map((item, index) => (
           <ScheduleItem
@@ -130,7 +130,7 @@ const ScheduleContainer: React.FC<ScheduleContainerType> = ({
 
   return (
     <div
-      className={style.WT_Calendar_ScheduleContainer_outer}
+      className={style.Calendar_ScheduleContainer_outer}
       style={{ height: `${height - 155}px` }}
     >
       <>
@@ -139,10 +139,10 @@ const ScheduleContainer: React.FC<ScheduleContainerType> = ({
         <MovingBaseLine movingTop={movingTop} scrollHeight={scrollHeight} color="#1890ff" visibility={isMoving} />
         {isShowCurrTimeLine(targetDay) && (
           <div
-            className={style.WT_Calendar_ScheduleContainer_currTimeLine}
+            className={style.Calendar_ScheduleContainer_currTimeLine}
             style={{ top: `${currTimeLineHeight + scrollHeight}px` }}
           >
-            <div className={style.WT_Calendar_ScheduleContainer_startPoint} />
+            <div className={style.Calendar_ScheduleContainer_startPoint} />
           </div>
         )}
       </>

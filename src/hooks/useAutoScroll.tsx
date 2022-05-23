@@ -8,7 +8,7 @@ export const useAutoScroll = (targetDay, height) => {
   const autoPositionScrollHandle: () => NodeJS.Timeout = () => {
     return setTimeout(() => {
       try {
-        const scrollContainerEle = document.getElementById('WT_Calendar_ScheduleContainer_inner');
+        const scrollContainerEle = document.getElementById('Calendar_ScheduleContainer_inner');
         const PositionTime: number =
           moment(
             `${getYear(autoPositionTime)}/${getMonth(autoPositionTime)}/${getDay(

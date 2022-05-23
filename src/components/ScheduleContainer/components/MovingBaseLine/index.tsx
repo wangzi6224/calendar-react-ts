@@ -36,9 +36,9 @@ const MovingBaseLine: React.FC<MovingBaseLineType> = ({ movingTop, scrollHeight,
           borderTop: `2px dashed ${color}`,
           visibility: visibility ? 'visible' : 'hidden'
         }}
-        className={style.WT_Calendar_ScheduleItem_CursorLine}
+        className={style.Calendar_ScheduleItem_CursorLine}
       >
-        <div style={{color}} className={style.WT_Calendar_ScheduleItem_timeText}>
+        <div style={{color}} className={style.Calendar_ScheduleItem_timeText}>
           {`${calcHoursText}:${calcMinutesText}`}
         </div>
       </div>
