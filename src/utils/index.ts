@@ -35,3 +35,22 @@ export const getZeroTime = (time: Date | number): Date | number => {
   }
   return time instanceof Date ? tempDate : tempDate.getTime();
 };
+
+type eventParamsType = {
+  evType: string | keyof HTMLElementEventMap;
+  handle: EventListenerOrEventListenerObject;
+  options?: boolean | AddEventListenerOptions
+  domInstance?: HTMLElement;
+}
+
+class DomEventHandle {
+  public addEvent({evType, handle, options = null, domInstance = document.body}: eventParamsType) {
+    domInstance.addEventListener(evType, handle, options);
+  }
+
+  public rmEvent({evType, handle, options = null, domInstance = document.body}: eventParamsType) {
+    domInstance.removeEventListener(evType, handle, options);
+  }
+}
+
+export const {addEvent, rmEvent} = new DomEventHandle();

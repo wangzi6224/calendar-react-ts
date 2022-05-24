@@ -51,6 +51,7 @@ const Container: React.FC<ContainerType> = ({
         return item;
       }),
     );
+    onSlideChange(currTimestamp, data)
   }
 
   return (
@@ -63,7 +64,7 @@ const Container: React.FC<ContainerType> = ({
       changeScheduleDataHandle,
       setTargetDay: setTargetDayHandle
     }}>
-      <div className={style.WT_Calendar_Container}>
+      <div className={style.Calendar_Container}>
         <CalendarHeader businessRender={businessRender}/>
         <ScheduleContainer
           data={scheduleData}

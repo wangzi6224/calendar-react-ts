@@ -14,7 +14,7 @@ const DailyOptions: React.FC<DailyOptionsType> = ({
   const {targetDay, setTargetDay, switchWeekendDay} = useContext(GlobalData);
 
   return (
-    <div className={style.WT_Calendar_DailyOptions}>
+    <div className={style.Calendar_DailyOptions}>
       {/* 选择今天 */}
       <div
         onClick={() => {
@@ -22,20 +22,20 @@ const DailyOptions: React.FC<DailyOptionsType> = ({
         }}
         className={
           moment(targetDay).format('YYYY年MM月DD日') === moment(new Date()).format('YYYY年MM月DD日')
-            ? style.WT_Calendar_DailyOptions_Btn
-            : style.WT_Calendar_DailyOptions_Btn_unActive
+            ? style.Calendar_DailyOptions_Btn
+            : style.Calendar_DailyOptions_Btn_unActive
         }
       >
         今天
       </div>
 
       {/* 日期展示 */}
-      <div className={style.WT_Calendar_DailyOptions_DateShow}>
+      <div className={style.Calendar_DailyOptions_DateShow}>
         <div
           onClick={() => {
             onChangeWeek('prevWeek');
           }}
-          className={style.WT_Calendar_DailyOptions_ChangeBtn}
+          className={style.Calendar_DailyOptions_ChangeBtn}
         >{`<`}</div>
         <div style={{ fontFamily: 'sans-serif' }}>
           {switchWeekendDay === 'week' &&
@@ -52,19 +52,19 @@ const DailyOptions: React.FC<DailyOptionsType> = ({
           onClick={() => {
             onChangeWeek('nextWeek');
           }}
-          className={style.WT_Calendar_DailyOptions_ChangeBtn}
+          className={style.Calendar_DailyOptions_ChangeBtn}
         >{`>`}</div>
       </div>
 
       {/* 日和周切换按钮 */}
-      <div className={style.WT_Calendar_DailyOptions_Checkout}>
+      <div className={style.Calendar_DailyOptions_Checkout}>
         <div
           onClick={() => {
             setSwitchWeekendDay('day');
           }}
-          className={`${style.WT_Calendar_DailyOptions_Btn} ${
-            style.WT_Calendar_DailyOptions_DayBtn
-          } ${switchWeekendDay === 'day' && style.WT_Calendar_DailyOptions_Active}`}
+          className={`${style.Calendar_DailyOptions_Btn} ${
+            style.Calendar_DailyOptions_DayBtn
+          } ${switchWeekendDay === 'day' && style.Calendar_DailyOptions_Active}`}
         >
           日
         </div>
@@ -73,9 +73,9 @@ const DailyOptions: React.FC<DailyOptionsType> = ({
             setCurrTime(targetDay);
             setSwitchWeekendDay('week');
           }}
-          className={`${style.WT_Calendar_DailyOptions_Btn} ${
-            style.WT_Calendar_DailyOptions_WeekBtn
-          } ${switchWeekendDay === 'week' && style.WT_Calendar_DailyOptions_Active}`}
+          className={`${style.Calendar_DailyOptions_Btn} ${
+            style.Calendar_DailyOptions_WeekBtn
+          } ${switchWeekendDay === 'week' && style.Calendar_DailyOptions_Active}`}
         >
           周
         </div>

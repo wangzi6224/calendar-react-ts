@@ -48,7 +48,7 @@ const CalendarHeader: React.FC<CalendarHeaderType> = ({
   };
 
   return (
-    <div className={style.WT_Calendar_Header}>
+    <div className={style.Calendar_Header}>
       <DailyOptions
         setCurrTime={setCurrTime}
         dateTextList={dateTextList}
@@ -65,8 +65,8 @@ const CalendarHeader: React.FC<CalendarHeaderType> = ({
           dateTextList={dateTextList}
         />
       )}
-      <div className={style.WT_Calendar_Header_Zone}>GMT+8</div>
-      <div className={style.WT_Calendar_Header_businessRender}>
+      <div className={style.Calendar_Header_Zone}>GMT+8</div>
+      <div className={style.Calendar_Header_businessRender}>
         {businessRender(targetDay)}
       </div>
     </div>

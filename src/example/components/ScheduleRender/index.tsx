@@ -3,7 +3,6 @@ import moment from "moment";
 import {dataType, timestampRange} from "@/data";
 
 const ScheduleRender: React.FC<{data: dataType, timestampRange: timestampRange}> = ({data, timestampRange}) => {
-  console.log(data)
   return (
     <div style={{width: '90px', fontSize: "14px"}}>
       <span style={{fontSize: "12px"}}>时间范围</span>
