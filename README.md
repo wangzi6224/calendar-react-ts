@@ -1,4 +1,4 @@
-# <center> Calendar-ts
+# <center> Calendar-react-ts
 
 ![img_3.png](public/images/img_3.png)
 
@@ -41,7 +41,7 @@ $ yarn add calendar-react-ts
 ## 本地开发
 
 ```git
-$ git clone git@github.com:wangzi6224/calendar-ts.git
+$ git clone git@github.com:wangzi6224/calendar-react-ts.git
 $ cd  calendar-ts
 $ npm install
 $ npm run start
@@ -115,4 +115,4 @@ const Page: React.FC = () => {
 
 ## License
 
-Calendar-ts is open source software licensed as [MIT](https://github.com/wangzi6224/calendar-ts/blob/master/LICENSE).
+Calendar-ts is open source software licensed as [MIT](https://github.com/wangzi6224/calendar-react-ts/blob/master/LICENSE).

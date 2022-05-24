@@ -1,6 +1,6 @@
 {
   "name": "calendar-react-ts",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "a calendar component by react with typescript",
   "main": "es/index.js",
   "scripts": {
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com:wangzi6224/calendar-ts.git"
+    "url": "git+ssh://git@github.com:wangzi6224/calendar-react-ts.git"
   },
   "keywords": [
     "react",
@@ -21,10 +21,10 @@
     "calendar"
   ],
   "author": "wangzi6224",
-  "license": "ISC",
-  "homepage": "https://github.com/wangzi6224/calendar-ts/blob/master/README.md",
+  "license": "MIT",
+  "homepage": "https://github.com/wangzi6224/calendar-react-ts/blob/master/README.md",
   "bugs": {
-    "url": "https://github.com/wangzi6224/calendar-ts/issues"
+    "url": "https://github.com/wangzi6224/calendar-react-ts/issues"
   },
   "sideEffects": [
     "dist/*",
@@ -46,6 +46,7 @@
     "autoprefixer": "^10.4.7",
     "babel-loader": "^8.2.5",
     "babel-plugin-module-alias": "^1.6.0",
+    "babel-plugin-module-resolver": "^4.1.0",
     "clean-webpack-plugin": "^4.0.0",
     "cross-env": "^7.0.3",
     "css-loader": "^6.7.1",
@@ -75,7 +76,6 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
-    "babel-plugin-module-resolver": "^4.1.0",
     "moment": "^2.29.3",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
