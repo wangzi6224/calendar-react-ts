@@ -11,6 +11,10 @@ var initialList = [{
   id: 1,
   startTime: Date.now() - 3600 * 1000,
   endTime: Date.now() + 3600 * 1000
+}, {
+  id: 2,
+  startTime: Date.now() - 3600 * 1000,
+  endTime: Date.now() + 3600 * 1000
 }];
 
 var Example = function Example() {

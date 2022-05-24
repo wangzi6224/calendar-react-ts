@@ -77,7 +77,7 @@ var ScheduleContainer = function ScheduleContainer(_ref) {
   }, [data, targetDay]);
   useAutoScroll(targetDay, height);
   useEffect(function () {
-    var containerList = document.getElementsByClassName("WT_Calendar_ScheduleItem_container");
+    var containerList = document.getElementsByClassName("Calendar_ScheduleItem_container");
 
     if (containerList[0]) {
       var _containerList$;
@@ -90,13 +90,13 @@ var ScheduleContainer = function ScheduleContainer(_ref) {
 
   var memo_ScheduleItem = useMemo(function () {
     return /*#__PURE__*/React.createElement("div", {
-      id: "WT_Calendar_ScheduleContainer_inner",
+      id: "Calendar_ScheduleContainer_inner",
       onScroll: function onScroll(e) {
         var _target;
 
         return setScrollHeight(-((_target = e.target) == null ? void 0 : _target.scrollTop));
       },
-      className: style.WT_Calendar_ScheduleContainer_inner
+      className: style.Calendar_ScheduleContainer_inner
     }, scheduleList == null ? void 0 : scheduleList.map(function (item, index) {
       return /*#__PURE__*/React.createElement(ScheduleItem, {
         rangeStartAndEndKey: rangeStartAndEndKey,
@@ -126,24 +126,25 @@ var ScheduleContainer = function ScheduleContainer(_ref) {
   };
 
   return /*#__PURE__*/React.createElement("div", {
-    className: style.WT_Calendar_ScheduleContainer_outer,
+    className: style.Calendar_ScheduleContainer_outer,
     style: {
       height: height - 155 + "px"
     }
   }, /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(TimeScale, {
     HoursList: HoursList,
     scrollHeight: scrollHeight
-  }), memo_ScheduleItem, isMoving && /*#__PURE__*/React.createElement(MovingBaseLine, {
+  }), memo_ScheduleItem, /*#__PURE__*/React.createElement(MovingBaseLine, {
     movingTop: movingTop,
     scrollHeight: scrollHeight,
-    color: "#1890ff"
+    color: "#1890ff",
+    visibility: isMoving
   }), isShowCurrTimeLine(targetDay) && /*#__PURE__*/React.createElement("div", {
-    className: style.WT_Calendar_ScheduleContainer_currTimeLine,
+    className: style.Calendar_ScheduleContainer_currTimeLine,
     style: {
       top: currTimeLineHeight + scrollHeight + "px"
     }
   }, /*#__PURE__*/React.createElement("div", {
-    className: style.WT_Calendar_ScheduleContainer_startPoint
+    className: style.Calendar_ScheduleContainer_startPoint
   }))));
 };
 

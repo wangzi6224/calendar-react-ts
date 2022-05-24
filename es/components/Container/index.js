@@ -50,6 +50,7 @@ var Container = function Container(_ref) {
 
       return item;
     }));
+    onSlideChange(currTimestamp, data);
   };
 
   return /*#__PURE__*/React.createElement(GlobalData.Provider, {
@@ -63,7 +64,7 @@ var Container = function Container(_ref) {
       setTargetDay: setTargetDayHandle
     }
   }, /*#__PURE__*/React.createElement("div", {
-    className: style.WT_Calendar_Container
+    className: style.Calendar_Container
   }, /*#__PURE__*/React.createElement(CalendarHeader, {
     businessRender: businessRender
   }), /*#__PURE__*/React.createElement(ScheduleContainer, {

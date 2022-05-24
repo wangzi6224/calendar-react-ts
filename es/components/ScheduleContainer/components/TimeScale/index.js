@@ -5,7 +5,7 @@ var TimeScale = function TimeScale(_ref) {
   var HoursList = _ref.HoursList,
       scrollHeight = _ref.scrollHeight;
   return /*#__PURE__*/React.createElement("div", {
-    className: style.WT_Calendar_scale,
+    className: style.Calendar_scale,
     style: {
       height: HoursList.length * 30 + "px",
       top: scrollHeight
@@ -16,10 +16,10 @@ var TimeScale = function TimeScale(_ref) {
     }
   }, HoursList.map(function (h, index) {
     return /*#__PURE__*/React.createElement("div", {
-      className: style.WT_Calendar_scale_item,
+      className: style.Calendar_scale_item,
       key: index
     }, /*#__PURE__*/React.createElement("span", {
-      className: style.WT_Calendar_scale_text,
+      className: style.Calendar_scale_text,
       style: {
         top: index === 0 && -5
       }

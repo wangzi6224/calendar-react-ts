@@ -16,19 +16,19 @@ var DailyOptions = function DailyOptions(_ref) {
       switchWeekendDay = _useContext.switchWeekendDay;
 
   return /*#__PURE__*/React.createElement("div", {
-    className: style.WT_Calendar_DailyOptions
+    className: style.Calendar_DailyOptions
   }, /*#__PURE__*/React.createElement("div", {
     onClick: function onClick() {
       setTargetDay(new Date().getTime());
     },
-    className: moment(targetDay).format('YYYY年MM月DD日') === moment(new Date()).format('YYYY年MM月DD日') ? style.WT_Calendar_DailyOptions_Btn : style.WT_Calendar_DailyOptions_Btn_unActive
+    className: moment(targetDay).format('YYYY年MM月DD日') === moment(new Date()).format('YYYY年MM月DD日') ? style.Calendar_DailyOptions_Btn : style.Calendar_DailyOptions_Btn_unActive
   }, "\u4ECA\u5929"), /*#__PURE__*/React.createElement("div", {
-    className: style.WT_Calendar_DailyOptions_DateShow
+    className: style.Calendar_DailyOptions_DateShow
   }, /*#__PURE__*/React.createElement("div", {
     onClick: function onClick() {
       onChangeWeek('prevWeek');
     },
-    className: style.WT_Calendar_DailyOptions_ChangeBtn
+    className: style.Calendar_DailyOptions_ChangeBtn
   }, "<"), /*#__PURE__*/React.createElement("div", {
     style: {
       fontFamily: 'sans-serif'
@@ -37,20 +37,20 @@ var DailyOptions = function DailyOptions(_ref) {
     onClick: function onClick() {
       onChangeWeek('nextWeek');
     },
-    className: style.WT_Calendar_DailyOptions_ChangeBtn
+    className: style.Calendar_DailyOptions_ChangeBtn
   }, ">")), /*#__PURE__*/React.createElement("div", {
-    className: style.WT_Calendar_DailyOptions_Checkout
+    className: style.Calendar_DailyOptions_Checkout
   }, /*#__PURE__*/React.createElement("div", {
     onClick: function onClick() {
       setSwitchWeekendDay('day');
     },
-    className: style.WT_Calendar_DailyOptions_Btn + " " + style.WT_Calendar_DailyOptions_DayBtn + " " + (switchWeekendDay === 'day' && style.WT_Calendar_DailyOptions_Active)
+    className: style.Calendar_DailyOptions_Btn + " " + style.Calendar_DailyOptions_DayBtn + " " + (switchWeekendDay === 'day' && style.Calendar_DailyOptions_Active)
   }, "\u65E5"), /*#__PURE__*/React.createElement("div", {
     onClick: function onClick() {
       setCurrTime(targetDay);
       setSwitchWeekendDay('week');
     },
-    className: style.WT_Calendar_DailyOptions_Btn + " " + style.WT_Calendar_DailyOptions_WeekBtn + " " + (switchWeekendDay === 'week' && style.WT_Calendar_DailyOptions_Active)
+    className: style.Calendar_DailyOptions_Btn + " " + style.Calendar_DailyOptions_WeekBtn + " " + (switchWeekendDay === 'week' && style.Calendar_DailyOptions_Active)
   }, "\u5468")));
 };
 
