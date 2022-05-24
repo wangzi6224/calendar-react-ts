@@ -1,8 +1,7 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import { createRoot } from 'react-dom/client';
-import styles from './Example.less'
-import moment from "moment";
-import Calendar from '@/index'
+import styles from './Example.less';
+import Calendar from '@/index';
 import BusinessRender from "@/example/components/BusinessRender";
 import ScheduleRender from '@/example/components/ScheduleRender'
 

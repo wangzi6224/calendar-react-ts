@@ -10,7 +10,7 @@ export type ContainerType = {
   scheduleRender?: (props: {
     data: dataType,
     timestampRange: timestampRange,
-  }) => JSX.Element;
+  }) => React.ReactNode;
   businessRender?: (timestamp: number) => React.ReactNode;
   mode?: 'day' | 'week';
   onSlideChange?: (currTimestamp: [number, number], data: dataType) => void;
@@ -82,7 +82,7 @@ export type ScheduleContainerType = {
   scheduleRender?: ({
     data: dataType,
     timestampRange: timestampRange,
-  }) => JSX.Element;
+  }) => React.ReactNode;
   rangeStartAndEndKey?: [string, string];
 };
 
@@ -97,7 +97,7 @@ export type ScheduleItemType = {
   scheduleRender?: ({
     data: dataType,
     timestampRange: timestampRange,
-  }) => JSX.Element;
+  }) => React.ReactNode;
   width: number;
   dataItemLength: number;
   id: string;

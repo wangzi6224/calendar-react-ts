@@ -4,11 +4,7 @@ import {GlobalData} from "@/components/Container";
 import {addEvent, rmEvent} from "@/utils";
 import moment from "moment";
 
-let isClick = false;
-let initMouseTop = 0;
-let initOffsetTop = 0;
-let dataIndex: number = null;
-let containerInitHeight = 0;
+
 /**
  * 24小时，每小时30像素，容器总高度 = 24小时 * 30像素
  * */
@@ -26,6 +22,11 @@ const ScheduleRender: React.FC<any> = ({
                                          setIsMoving,
                                          setMovingTop
 }) => {
+  let isClick = false;
+  let initMouseTop = 0;
+  let initOffsetTop = 0;
+  let dataIndex: number = null;
+  let containerInitHeight = 0;
   const ref = useRef<HTMLDivElement>();
   const bottomLineRef = useRef<HTMLDivElement>();
   const {isDraggable, targetDay, changeScheduleDataHandle} = useContext(GlobalData);
