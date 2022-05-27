@@ -1,1 +1,1 @@
-{"version":3,"sources":["example/Example.less"],"names":[],"mappings":"AAAA,SACE,OAAA,KAAA,KACA,MAAA,MACA,OAAA,IAAA,MAAA,QACA,cAAA","file":"Example.css","sourcesContent":[".Example {\r\n  margin: 20px auto;\r\n  width: 400px;\r\n  border: 1px solid #a29fa5;\r\n  border-radius: 8px;\r\n}\r\n"]}
+{"version":3,"sources":["example/Example.less"],"names":[],"mappings":"AAAA,SACE,OAAA,KAAA,KACA,MAAA,MACA,OAAA,IAAA,MAAA,QACA,cAAA","file":"Example.css","sourcesContent":[".Example {\n  margin: 20px auto;\n  width: 400px;\n  border: 1px solid #a29fa5;\n  border-radius: 8px;\n}\n"]}

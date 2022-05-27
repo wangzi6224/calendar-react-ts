@@ -98,8 +98,8 @@ export type ScheduleItemType = {
     data: dataType,
     timestampRange: timestampRange,
   }) => React.ReactNode;
-  width: number;
-  dataItemLength: number;
+  width?: number;
+  dataItemLength?: number;
   id: string;
   setIsMoving: React.Dispatch<boolean>;
   setMovingTop: React.Dispatch<number>;

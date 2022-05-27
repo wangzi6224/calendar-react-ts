@@ -41,4 +41,38 @@ export var getZeroTime = function getZeroTime(time) {
 
   return time instanceof Date ? tempDate : tempDate.getTime();
 };
+
+var DomEventHandle = /*#__PURE__*/function () {
+  function DomEventHandle() {}
+
+  var _proto = DomEventHandle.prototype;
+
+  _proto.addEvent = function addEvent(_ref) {
+    var evType = _ref.evType,
+        handle = _ref.handle,
+        _ref$options = _ref.options,
+        options = _ref$options === void 0 ? null : _ref$options,
+        _ref$domInstance = _ref.domInstance,
+        domInstance = _ref$domInstance === void 0 ? document.body : _ref$domInstance;
+    domInstance.addEventListener(evType, handle, options);
+  };
+
+  _proto.rmEvent = function rmEvent(_ref2) {
+    var evType = _ref2.evType,
+        handle = _ref2.handle,
+        _ref2$options = _ref2.options,
+        options = _ref2$options === void 0 ? null : _ref2$options,
+        _ref2$domInstance = _ref2.domInstance,
+        domInstance = _ref2$domInstance === void 0 ? document.body : _ref2$domInstance;
+    domInstance.removeEventListener(evType, handle, options);
+  };
+
+  return DomEventHandle;
+}();
+
+var _DomEventHandle = new DomEventHandle(),
+    addEvent = _DomEventHandle.addEvent,
+    rmEvent = _DomEventHandle.rmEvent;
+
+export { addEvent, rmEvent };
 //# sourceMappingURL=index.js.map

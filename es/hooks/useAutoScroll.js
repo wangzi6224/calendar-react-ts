@@ -10,7 +10,7 @@ export var useAutoScroll = function useAutoScroll(targetDay, height) {
       try {
         var _document$getElementB;
 
-        var scrollContainerEle = document.getElementById('WT_Calendar_ScheduleContainer_inner');
+        var scrollContainerEle = document.getElementById('Calendar_ScheduleContainer_inner');
         var PositionTime = moment(getYear(autoPositionTime) + "/" + getMonth(autoPositionTime) + "/" + getDay(autoPositionTime) + " " + moment(autoPositionTime).hour() + ":00:00").unix() * 1000;
         scrollContainerEle.scrollTop = ((_document$getElementB = document.getElementById("" + PositionTime)) == null ? void 0 : _document$getElementB.offsetTop) - height / 3;
       } catch (err) {

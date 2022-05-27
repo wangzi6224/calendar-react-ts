@@ -12,16 +12,16 @@ var WeeklyOptions = function WeeklyOptions(_ref) {
       switchWeekendDay = _useContext.switchWeekendDay;
 
   return /*#__PURE__*/React.createElement("div", {
-    className: style.WT_Calendar_WeeklyOptions
+    className: style.Calendar_WeeklyOptions
   }, /*#__PURE__*/React.createElement("div", {
-    className: style.WT_Calendar_WeeklyOptions_weekText
+    className: style.Calendar_WeeklyOptions_weekText
   }, ['一', '二', '三', '四', '五', '六', '日'].map(function (w, index) {
     return /*#__PURE__*/React.createElement("div", {
-      className: style.WT_Calendar_WeeklyOptions_weekItem,
+      className: style.Calendar_WeeklyOptions_weekItem,
       key: index
     }, "\u661F\u671F", w);
   })), /*#__PURE__*/React.createElement("div", {
-    className: style.WT_Calendar_WeeklyOptions_DateText
+    className: style.Calendar_WeeklyOptions_DateText
   }, dateTextList.map(function (d, index) {
     return /*#__PURE__*/React.createElement("div", {
       onClick: function onClick() {
@@ -31,7 +31,7 @@ var WeeklyOptions = function WeeklyOptions(_ref) {
       style: {
         color: getYear(d) + "-" + getMonth(d) + "-" + getDay(d) === getYear(new Date().getTime()) + "-" + getMonth(new Date().getTime()) + "-" + getDay(new Date().getTime()) && 'red'
       },
-      className: style.WT_Calendar_WeeklyOptions_DateItem + " " + (d === targetDay && style.WT_Calendar_WeeklyOptions_DateItem_active)
+      className: style.Calendar_WeeklyOptions_DateItem + " " + (d === targetDay && style.Calendar_WeeklyOptions_DateItem_active)
     }, getDay(d));
   })));
 };

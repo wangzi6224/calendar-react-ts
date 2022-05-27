@@ -56,7 +56,7 @@ var CalendarHeader = function CalendarHeader(_ref) {
   };
 
   return /*#__PURE__*/React.createElement("div", {
-    className: style.WT_Calendar_Header
+    className: style.Calendar_Header
   }, /*#__PURE__*/React.createElement(DailyOptions, {
     setCurrTime: setCurrTime,
     dateTextList: dateTextList,
@@ -73,9 +73,9 @@ var CalendarHeader = function CalendarHeader(_ref) {
   }), switchWeekendDay === 'week' && /*#__PURE__*/React.createElement(WeeklyOptions, {
     dateTextList: dateTextList
   }), /*#__PURE__*/React.createElement("div", {
-    className: style.WT_Calendar_Header_Zone
+    className: style.Calendar_Header_Zone
   }, "GMT+8"), /*#__PURE__*/React.createElement("div", {
-    className: style.WT_Calendar_Header_businessRender
+    className: style.Calendar_Header_businessRender
   }, businessRender(targetDay)));
 };
 

@@ -3,6 +3,7 @@ import style from "@/components/ScheduleItem/index.less";
 import {GlobalData} from "@/components/Container";
 import {addEvent, rmEvent} from "@/utils";
 import moment from "moment";
+import {dataType, ScheduleItemType, timestampRange} from "@/data";
 
 
 /**
@@ -10,17 +11,23 @@ import moment from "moment";
  * */
 const TOTAL_HEIGHT: number = 24 * 30;
 
-const ScheduleRender: React.FC<any> = ({
+interface ScheduleRenderType extends ScheduleItemType{
+  index: number;
+  data: dataType;
+  isShow: boolean;
+}
+
+const ScheduleRender: React.FC<ScheduleRenderType> = ({
                                          id,
-                                         isShow,
                                          data,
-                                         dataItem,
-                                         rangeStartAndEndKey,
                                          index,
-                                         scheduleRender,
-                                         timestampRange,
+                                         isShow,
+                                         dataItem,
                                          setIsMoving,
-                                         setMovingTop
+                                         setMovingTop,
+                                         timestampRange,
+                                         scheduleRender,
+                                         rangeStartAndEndKey,
 }) => {
   let isClick = false;
   let initMouseTop = 0;
@@ -47,6 +54,7 @@ const ScheduleRender: React.FC<any> = ({
     return +height.replace(/[^\d.-]/g, '')
   };
 
+  // 改变容器高度，鼠标移动事件
   const changeRangeMouseMove = (ev) => {
       addEvent({
         evType: "mouseleave", handle: onMouseLeaveBodyHandle
@@ -73,6 +81,7 @@ const ScheduleRender: React.FC<any> = ({
       DomInstance.style.height = `${__resultHeight__}px`;
   };
 
+  // 改变容器高度，鼠标抬起事件
   const changeRangeMouseUp = () => {
     const DomInstance = ref.current;
     if(DomInstance) {
@@ -88,6 +97,17 @@ const ScheduleRender: React.FC<any> = ({
       rmEvent({evType: 'mouseup', handle: changeRangeMouseUp});
       rmEvent({evType: 'mouseleave', handle: onMouseLeaveBodyHandle});
     }
+  };
+
+  // 按下鼠标
+  const mouseDownHandle = (ev, index) => {
+    if (!isDraggable) return;
+    ev.persist();
+    dataIndex = index;
+    initMouseTop = ev.clientY;
+    setIsMoving(true);
+    addEvent({evType:'mousemove', handle: onMouseMove});
+    addEvent({evType: 'mouseup', handle: mouseUpHandle});
   };
 
   // 移动鼠标
@@ -136,6 +156,9 @@ const ScheduleRender: React.FC<any> = ({
         const HOUR = Math.floor(DomInstance.offsetTop / 30);
         const MINUTES = Math.floor(((DomInstance.offsetTop / 30) * 60) % 60);
         const SECONDS = Math.floor(((DomInstance.offsetTop / 30) * 60) % 60 % 60);
+        /**
+         * currentTimeStamp后面的随机数：防止为改变值，但是已经开启绝对定位，导致无法触发render复原。
+        * */
         const currentTimeStamp = (moment(`${DATE} ${HOUR}:${MINUTES}:${SECONDS}`).unix() * 1000) + Math.floor(Math.random() * 1000);
         const timeDiff = dataItem[dataIndex][rangeStartAndEndKey[1]] - dataItem[dataIndex][rangeStartAndEndKey[0]];
         changeScheduleDataHandle([currentTimeStamp, currentTimeStamp + timeDiff], dataItem[dataIndex]);
@@ -149,17 +172,7 @@ const ScheduleRender: React.FC<any> = ({
     }
   };
 
-  // 按下鼠标
-  const mouseDownHandle = (ev, index) => {
-    if (!isDraggable) return;
-    ev.persist();
-    dataIndex = index;
-    initMouseTop = ev.clientY;
-    setIsMoving(true);
-    addEvent({evType:'mousemove', handle: onMouseMove});
-    addEvent({evType: 'mouseup', handle: mouseUpHandle});
-  };
-
+  // 改变容器高度，鼠标抬起事件
   const changeRangeHandle = (ev, data, index) => {
     ev.stopPropagation();
     dataIndex = index;
@@ -189,7 +202,7 @@ const ScheduleRender: React.FC<any> = ({
             top: calcTop(data[rangeStartAndEndKey[0]]),
           }}
         >
-          {scheduleRender({ data, timestampRange })}
+          {scheduleRender && scheduleRender({ data, timestampRange })}
           <div
             ref={bottomLineRef}
             onMouseDown={(ev) => {
