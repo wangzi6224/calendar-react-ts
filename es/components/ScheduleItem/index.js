@@ -37,13 +37,11 @@ var ScheduleItem = function ScheduleItem(_ref) {
       id: id,
       data: data,
       index: index,
-      width: width,
       dataItem: dataItem,
       setIsMoving: setIsMoving,
       setMovingTop: setMovingTop,
       isShow: timeRangeShow(data),
       scheduleRender: scheduleRender,
-      dataItemLength: dataItemLength,
       timestampRange: timestampRange,
       rangeStartAndEndKey: rangeStartAndEndKey
     });

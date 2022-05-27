@@ -3,23 +3,23 @@ import style from "../../index.less";
 import { GlobalData } from "../../../Container";
 import { addEvent, rmEvent } from "../../../../utils";
 import moment from "moment";
+
 /**
  * 24小时，每小时30像素，容器总高度 = 24小时 * 30像素
  * */
-
 var TOTAL_HEIGHT = 24 * 30;
 
 var ScheduleRender = function ScheduleRender(_ref) {
   var id = _ref.id,
-      isShow = _ref.isShow,
       data = _ref.data,
-      dataItem = _ref.dataItem,
-      rangeStartAndEndKey = _ref.rangeStartAndEndKey,
       index = _ref.index,
-      scheduleRender = _ref.scheduleRender,
-      timestampRange = _ref.timestampRange,
+      isShow = _ref.isShow,
+      dataItem = _ref.dataItem,
       setIsMoving = _ref.setIsMoving,
-      setMovingTop = _ref.setMovingTop;
+      setMovingTop = _ref.setMovingTop,
+      timestampRange = _ref.timestampRange,
+      scheduleRender = _ref.scheduleRender,
+      rangeStartAndEndKey = _ref.rangeStartAndEndKey;
   var isClick = false;
   var initMouseTop = 0;
   var initOffsetTop = 0;
@@ -48,7 +48,8 @@ var ScheduleRender = function ScheduleRender(_ref) {
 
   var getHeightAttrNumber = function getHeightAttrNumber(height) {
     return +height.replace(/[^\d.-]/g, '');
-  };
+  }; // 改变容器高度，鼠标移动事件
+
 
   var changeRangeMouseMove = function changeRangeMouseMove(ev) {
     addEvent({
@@ -76,7 +77,8 @@ var ScheduleRender = function ScheduleRender(_ref) {
     }
 
     DomInstance.style.height = __resultHeight__ + "px";
-  };
+  }; // 改变容器高度，鼠标抬起事件
+
 
   var changeRangeMouseUp = function changeRangeMouseUp() {
     var DomInstance = ref.current;
@@ -98,6 +100,23 @@ var ScheduleRender = function ScheduleRender(_ref) {
         handle: onMouseLeaveBodyHandle
       });
     }
+  }; // 按下鼠标
+
+
+  var mouseDownHandle = function mouseDownHandle(ev, index) {
+    if (!isDraggable) return;
+    ev.persist();
+    dataIndex = index;
+    initMouseTop = ev.clientY;
+    setIsMoving(true);
+    addEvent({
+      evType: 'mousemove',
+      handle: onMouseMove
+    });
+    addEvent({
+      evType: 'mouseup',
+      handle: mouseUpHandle
+    });
   }; // 移动鼠标
 
 
@@ -153,6 +172,10 @@ var ScheduleRender = function ScheduleRender(_ref) {
         var HOUR = Math.floor(DomInstance.offsetTop / 30);
         var MINUTES = Math.floor(DomInstance.offsetTop / 30 * 60 % 60);
         var SECONDS = Math.floor(DomInstance.offsetTop / 30 * 60 % 60 % 60);
+        /**
+         * currentTimeStamp后面的随机数：防止为改变值，但是已经开启绝对定位，导致无法触发render复原。
+        * */
+
         var currentTimeStamp = moment(DATE + " " + HOUR + ":" + MINUTES + ":" + SECONDS).unix() * 1000 + Math.floor(Math.random() * 1000);
         var timeDiff = dataItem[dataIndex][rangeStartAndEndKey[1]] - dataItem[dataIndex][rangeStartAndEndKey[0]];
         changeScheduleDataHandle([currentTimeStamp, currentTimeStamp + timeDiff], dataItem[dataIndex]);
@@ -174,24 +197,8 @@ var ScheduleRender = function ScheduleRender(_ref) {
     } catch (err) {
       console.log(err);
     }
-  }; // 按下鼠标
+  }; // 改变容器高度，鼠标抬起事件
 
-
-  var mouseDownHandle = function mouseDownHandle(ev, index) {
-    if (!isDraggable) return;
-    ev.persist();
-    dataIndex = index;
-    initMouseTop = ev.clientY;
-    setIsMoving(true);
-    addEvent({
-      evType: 'mousemove',
-      handle: onMouseMove
-    });
-    addEvent({
-      evType: 'mouseup',
-      handle: mouseUpHandle
-    });
-  };
 
   var changeRangeHandle = function changeRangeHandle(ev, data, index) {
     ev.stopPropagation();
@@ -226,7 +233,7 @@ var ScheduleRender = function ScheduleRender(_ref) {
       height: (calcHeight([data[rangeStartAndEndKey[0]], data[rangeStartAndEndKey[1]]]) || 30) + "px",
       top: calcTop(data[rangeStartAndEndKey[0]])
     }
-  }, scheduleRender({
+  }, scheduleRender && scheduleRender({
     data: data,
     timestampRange: timestampRange
   }), /*#__PURE__*/React.createElement("div", {
