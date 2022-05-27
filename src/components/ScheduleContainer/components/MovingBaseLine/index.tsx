@@ -31,7 +31,6 @@ const MovingBaseLine: React.FC<MovingBaseLineType> = ({ movingTop, scrollHeight,
   return (
       <div
         style={{
-          display: movingTop + scrollHeight <= 0 ? 'none' : 'block',
           top: movingTop + scrollHeight <= 0 ? 0 : movingTop + scrollHeight,
           borderTop: `2px dashed ${color}`,
           visibility: visibility ? 'visible' : 'hidden'

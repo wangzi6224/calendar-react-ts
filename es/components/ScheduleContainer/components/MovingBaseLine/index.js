@@ -26,7 +26,6 @@ var MovingBaseLine = function MovingBaseLine(_ref) {
   }, [movingTop]);
   return /*#__PURE__*/React.createElement("div", {
     style: {
-      display: movingTop + scrollHeight <= 0 ? 'none' : 'block',
       top: movingTop + scrollHeight <= 0 ? 0 : movingTop + scrollHeight,
       borderTop: "2px dashed " + color,
       visibility: visibility ? 'visible' : 'hidden'

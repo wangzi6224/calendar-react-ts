@@ -31,25 +31,21 @@ const ScheduleItem: React.FC<ScheduleItemType> = ({
         className={style.Calendar_ScheduleItem}
         style={{ width: calcWidth(width, dataItemLength) }}
       >
-        {dataItem?.map((data, index) => {
-          return (
-              <ScheduleRender
-                key={`${data[rangeStartAndEndKey[0]]}${index}`}
-                id={id}
-                data={data}
-                index={index}
-                width={width}
-                dataItem={dataItem}
-                setIsMoving={setIsMoving}
-                setMovingTop={setMovingTop}
-                isShow={timeRangeShow(data)}
-                scheduleRender={scheduleRender}
-                dataItemLength={dataItemLength}
-                timestampRange={timestampRange}
-                rangeStartAndEndKey={rangeStartAndEndKey}
-              />
-          );
-        })}
+        {dataItem?.map((data, index) => (
+          <ScheduleRender
+            key={`${data[rangeStartAndEndKey[0]]}${index}`}
+            id={id}
+            data={data}
+            index={index}
+            dataItem={dataItem}
+            setIsMoving={setIsMoving}
+            setMovingTop={setMovingTop}
+            isShow={timeRangeShow(data)}
+            scheduleRender={scheduleRender}
+            timestampRange={timestampRange}
+            rangeStartAndEndKey={rangeStartAndEndKey}
+          />
+        ))}
       </div>
     </div>
   );
