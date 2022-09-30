@@ -18,7 +18,6 @@ interface ScheduleRenderType extends ScheduleItemType{
 }
 
 const ScheduleRender: React.FC<ScheduleRenderType> = ({
-                                         id,
                                          data,
                                          index,
                                          isShow,
@@ -40,7 +39,16 @@ const ScheduleRender: React.FC<ScheduleRenderType> = ({
 
   // 计算日程容器top值
   const calcTop: (startTime: number) => number = useMemo(() => {
-    return (startTime) => moment(startTime).minute() / 2
+    return (startTime) => {
+      const HOUR_PX = moment((startTime)).hours() * 30;
+      const MINUTES_PX = moment(startTime).minutes() / 2;
+      const SECONDS_PX = moment(startTime).seconds() * 0.03;
+      // console.log(`${moment(startTime).hours()}小时:`, `${HOUR_PX}px`);
+      // console.log(`${moment(startTime).minutes()}分钟:`, `${MINUTES_PX}px`);
+      // console.log(`${moment(startTime).seconds()}秒:`, `${SECONDS_PX}px`);
+      // console.log(`共计${HOUR_PX + MINUTES_PX + SECONDS_PX}px`)
+      return HOUR_PX + MINUTES_PX + SECONDS_PX
+    }
   }, []);
 
   // 计算日程容器height值
@@ -115,8 +123,6 @@ const ScheduleRender: React.FC<ScheduleRenderType> = ({
     try {
         const DomInstance = ref.current;
         if(!isClick && DomInstance) {
-          DomInstance.style.position = 'absolute';
-          DomInstance.style.top = `${document.getElementById(id).offsetTop + DomInstance.offsetTop}px`;
           initOffsetTop = DomInstance.offsetTop;
         }
         isClick = true;
@@ -198,6 +204,8 @@ const ScheduleRender: React.FC<ScheduleRenderType> = ({
           onMouseDown={(ev) => mouseDownHandle(ev, index)}
           className={`${style.Calendar_ScheduleItem_container}`}
           style={{
+            left: `${index * 90 + 50}px`,
+            position: 'absolute',
             height: `${calcHeight([data[rangeStartAndEndKey[0]], data[rangeStartAndEndKey[1]]]) || 30}px`,
             top: calcTop(data[rangeStartAndEndKey[0]]),
           }}
