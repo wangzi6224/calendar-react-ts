@@ -3,7 +3,7 @@ import style from "@/components/ScheduleItem/index.less";
 import {GlobalData} from "@/components/Container";
 import {addEvent, rmEvent} from "@/utils";
 import moment from "moment";
-import {dataType, ScheduleItemType, timestampRange} from "@/data";
+import {dataType, ScheduleItemType} from "@/data";
 
 
 /**
@@ -199,8 +199,8 @@ const ScheduleRender: React.FC<ScheduleRenderType> = ({
       {isShow && (
         <div
           ref={ref}
-          key={`${data[rangeStartAndEndKey[0]]}${index}`}
-          id={`${data[rangeStartAndEndKey[0]]}${index}`}
+          key={`${data.id}`}
+          id={`${data.id}`}
           onMouseDown={(ev) => mouseDownHandle(ev, index)}
           className={`${style.Calendar_ScheduleItem_container}`}
           style={{

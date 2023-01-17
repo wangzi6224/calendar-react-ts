@@ -9,11 +9,11 @@ const container = document.getElementById('root');
 const root = createRoot(container!);
 
 const initialList = [{
-  id:1,
+  id:'1',
   startTime: Date.now() - 3600 * 1000,
   endTime: Date.now() + 3600 * 1000,
 }, {
-  id:2,
+  id:'2',
     startTime: Date.now() - 3600 * 1000,
     endTime: Date.now() + 3600 * 1000,
 }]

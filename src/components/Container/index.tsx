@@ -1,5 +1,5 @@
 import style from './index.less';
-import React, {createContext, useState} from 'react';
+import React, {createContext, useEffect, useState} from 'react';
 import CalendarHeader from '@/components/CalendarHeader';
 import ScheduleContainer from '@/components/ScheduleContainer';
 import type {ContainerType, dataType, timestampRange} from '@/data.d';
@@ -32,6 +32,17 @@ const Container: React.FC<ContainerType> = ({
   const [scheduleData, setScheduleData] = useState<dataType[]>(data);
   // 切换日和周
   const [switchWeekendDay, setSwitchWeekendDay] = useState<'day' | 'week'>(mode);
+
+  useEffect(() => {
+    if(data.length > new Set(data.map(item=>item.id)).size){
+      throw new Error('Error: The "id" attribute cannot be repeat.')
+    }
+    for (const item of data) {
+      if (!item?.id) {
+        throw new Error('The id field is missing in data.')
+      }
+    }
+  }, [])
 
   const setTargetDayHandle = timestamp => {
     onChange(timestamp);

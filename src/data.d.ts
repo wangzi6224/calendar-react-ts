@@ -19,6 +19,7 @@ export type ContainerType = {
 };
 
 export type dataType = {
+  id: string | number;
   startTime: number;
   endTime: number;
   [propsName: string]: any;
