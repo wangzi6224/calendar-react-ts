@@ -204,7 +204,7 @@ const ScheduleRender: React.FC<ScheduleRenderType> = ({
           onMouseDown={(ev) => mouseDownHandle(ev, index)}
           className={`${style.Calendar_ScheduleItem_container}`}
           style={{
-            left: `${index * 90 + 50}px`,
+            left: `${index * 90}px`,
             position: 'absolute',
             height: `${calcHeight([data[rangeStartAndEndKey[0]], data[rangeStartAndEndKey[1]]]) || 30}px`,
             top: calcTop(data[rangeStartAndEndKey[0]]),

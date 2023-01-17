@@ -10,13 +10,20 @@ const root = createRoot(container!);
 
 const initialList = [{
   id:'1',
-  startTime: Date.now() - 3600 * 1000,
-  endTime: Date.now() + 3600 * 1000,
+  startTime: Date.now() - 2000 * 1000,
+  endTime: Date.now() + 5600 * 1000,
+
 }, {
   id:'2',
-    startTime: Date.now() - 3600 * 1000,
-    endTime: Date.now() + 3600 * 1000,
-}]
+  startTime: Date.now() - (3600 + 7600) * 1000,
+  endTime: Date.now() + (3600 + 7600) * 1000,
+},
+  {
+    id:'3',
+    startTime: Date.now() - (3600 + 3600) * 1000,
+    endTime: Date.now() + (3600 + 10600) * 1000,
+  }
+]
 
 const Example: React.FC = () => {
   const [scheduleList, setScheduleList] = useState<typeof initialList>(initialList);

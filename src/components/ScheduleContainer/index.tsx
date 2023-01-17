@@ -49,6 +49,7 @@ const ScheduleContainer: React.FC<ScheduleContainerType> = ({
     () => (moment(targetDay).hour() * 60 + moment(targetDay).minute()) / 2,
   );
   const [containerWidth, setContainerWidth] = useState<number>(0);
+  const [containerRange, setContainerRange] = useState<number[]>([]);
   const [isMoving, setIsMoving] = useState<boolean>(false);
   const [movingTop, setMovingTop] = useState<number>(0);
 
@@ -77,8 +78,38 @@ const ScheduleContainer: React.FC<ScheduleContainerType> = ({
         }),
       });
     }
+    setContainerRange([result[0].timestampRange[0], result[result.length - 1].timestampRange[1]])
     setScheduleList(result);
+    calcColLevel();
   }, [data, targetDay]);
+
+
+  const findNeighbor = (s, dp, x = 0) => {
+    for (let i = x; i < dp.length; i++) {
+      if ((dp[i].find(j => (s?.startTime >= j?.startTime && s?.startTime <= j?.endTime) || (s?.endTime <= j?.startTime && s?.endTime >= j?.endTime))) ||
+        (dp[i].find(j => (s?.startTime < j?.startTime && s?.startTime > j?.endTime) || (s?.endTime > j?.startTime && s?.endTime < j?.endTime)))) {
+        if (Array.isArray(dp[i + 1])) {
+          findNeighbor(s, dp, i + 1)
+          break
+        } else {
+          dp.push([])
+          dp[i + 1].push(s)
+          break
+        }
+      } else {
+        dp[i].push(s)
+        break
+      }
+    }
+  }
+
+  const calcColLevel = () => {
+    const dp = [[]];
+    for (const s of data) {
+      findNeighbor(s, dp)
+    }
+    console.log(dp);
+  };
 
   useAutoScroll(targetDay, height)
 
