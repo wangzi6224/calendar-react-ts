@@ -113,7 +113,7 @@ const Page: React.FC = () => {
 |  onSlideChange   | 当滑拖拽日程，改变日程开始时间或日程时间范围是触发               |     no     | `(currTimestamp: [number, number], data: {startTime: number; endTime: number;}) => void;`                   |
 |  businessRender  | 传入一些自定义的业务组件                            |     no     | `(timestamp: number) => React.ReactNode;`                                                                   |
 |  scheduleRender  | 每一个渲染的日程的内部UI组件，可以自定义一下展示的元素或者点击事件等交互行为 |     no     | `(props: {data: {startTime: number; endTime: number;} ; timestampRange: [number, number]}) => JSX.Element;` |
-|  renderItemWidth  | 每一个渲染的日程的内部UI组件，可以自定义一下展示的元素或者点击事件等交互行为 |     no     | `number` |
+|  renderItemWidth  | 每一个渲染的日程UI组件的宽度 |     no     | `number` |
 
 ## License
 
