@@ -12,6 +12,8 @@ export const GlobalData = createContext<{
   height: number;
   isDraggable: boolean;
   changeScheduleDataHandle: (currTimestamp: timestampRange, data: dataType) => void;
+  itemColLevelDict: Map<string | number, number>
+  renderItemWidth: number
 }>(null)
 
 const Container: React.FC<ContainerType> = ({
@@ -25,6 +27,7 @@ const Container: React.FC<ContainerType> = ({
   onSlideChange,
   isDraggable,
   rangeStartAndEndKey,
+  renderItemWidth
 }) => {
   // 当前选择日期时间戳
   const [targetDay, setTargetDay] = useState<number>(initDay);
@@ -32,6 +35,7 @@ const Container: React.FC<ContainerType> = ({
   const [scheduleData, setScheduleData] = useState<dataType[]>(data);
   // 切换日和周
   const [switchWeekendDay, setSwitchWeekendDay] = useState<'day' | 'week'>(mode);
+  const itemColLevelDict = new Map<string | number, number>()
 
   useEffect(() => {
     if(data.length > new Set(data.map(item=>item.id)).size){
@@ -42,7 +46,8 @@ const Container: React.FC<ContainerType> = ({
         throw new Error('The id field is missing in data.')
       }
     }
-  }, [])
+    calcColLevel()
+  }, [data, targetDay]);
 
   const setTargetDayHandle = timestamp => {
     onChange(timestamp);
@@ -64,6 +69,37 @@ const Container: React.FC<ContainerType> = ({
     );
     onSlideChange(currTimestamp, data)
   }
+  const findNeighbor = (s: dataType, dp: (dataType | [])[], x: number) => {
+    for (let i = x; i < dp.length; i++) {
+      if (
+        dp[i].find(j => s?.startTime >= j?.startTime && s?.startTime <= j?.endTime) ||
+        dp[i].find(j => s?.endTime >= j?.startTime && s?.endTime <= j?.endTime) ||
+        dp[i].find(j => s?.startTime <= j?.startTime && s?.endTime >= j?.endTime)
+      ) {
+        if (Array.isArray(dp[i + 1])) {
+          findNeighbor(s, dp, i + 1)
+          break
+        } else {
+          dp.push([])
+          dp[i + 1].push({...s, col: i + 1})
+          break
+        }
+      } else {
+        dp[i].push({...s, col: i})
+        break
+      }
+    }
+  };
+
+  const calcColLevel = () => {
+    const dp: (dataType | [])[] = [[]];
+    for (const s of data) {
+      findNeighbor(s, dp, 0)
+    }
+    itemColLevelDict.clear();
+    const result: dataType[] = dp.flat();
+    result.forEach(i => itemColLevelDict.set(i.id, i.col))
+  };
 
   return (
     <GlobalData.Provider value={{
@@ -73,7 +109,9 @@ const Container: React.FC<ContainerType> = ({
       switchWeekendDay,
       setSwitchWeekendDay,
       changeScheduleDataHandle,
-      setTargetDay: setTargetDayHandle
+      setTargetDay: setTargetDayHandle,
+      itemColLevelDict,
+      renderItemWidth
     }}>
       <div className={style.Calendar_Container}>
         <CalendarHeader businessRender={businessRender}/>

@@ -50,6 +50,7 @@ const Example: React.FC = () => {
         initDay={scheduleDate}
         onSlideChange={slideChangeHandle}
         isDraggable
+        renderItemWidth={60}
         data={scheduleList}
         mode={'week'}
         onChange={setScheduleDate}

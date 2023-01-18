@@ -15,6 +15,7 @@ export type ContainerType = {
   mode?: 'day' | 'week';
   onSlideChange?: (currTimestamp: [number, number], data: dataType) => void;
   isDraggable?: boolean;
+  renderItemWidth?: number;
   rangeStartAndEndKey?: [string, string];
 };
 
@@ -22,6 +23,7 @@ export type dataType = {
   id: string | number;
   startTime: number;
   endTime: number;
+  col?: number;
   [propsName: string]: any;
 };
 

@@ -4,7 +4,7 @@ import {dataType, timestampRange} from "@/data";
 
 const ScheduleRender: React.FC<{data: dataType, timestampRange: timestampRange}> = ({data, timestampRange}) => {
   return (
-    <div style={{width: '90px', fontSize: "14px"}}>
+    <div style={{fontSize: "14px"}}>
       <span style={{fontSize: "12px"}}>时间范围</span>
       <div>
         {

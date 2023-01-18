@@ -35,7 +35,7 @@ const ScheduleRender: React.FC<ScheduleRenderType> = ({
   let containerInitHeight = 0;
   const ref = useRef<HTMLDivElement>();
   const bottomLineRef = useRef<HTMLDivElement>();
-  const {isDraggable, targetDay, changeScheduleDataHandle} = useContext(GlobalData);
+  const {isDraggable, targetDay, changeScheduleDataHandle, itemColLevelDict, renderItemWidth} = useContext(GlobalData);
 
   // 计算日程容器top值
   const calcTop: (startTime: number) => number = useMemo(() => {
@@ -43,10 +43,6 @@ const ScheduleRender: React.FC<ScheduleRenderType> = ({
       const HOUR_PX = moment((startTime)).hours() * 30;
       const MINUTES_PX = moment(startTime).minutes() / 2;
       const SECONDS_PX = moment(startTime).seconds() * 0.03;
-      // console.log(`${moment(startTime).hours()}小时:`, `${HOUR_PX}px`);
-      // console.log(`${moment(startTime).minutes()}分钟:`, `${MINUTES_PX}px`);
-      // console.log(`${moment(startTime).seconds()}秒:`, `${SECONDS_PX}px`);
-      // console.log(`共计${HOUR_PX + MINUTES_PX + SECONDS_PX}px`)
       return HOUR_PX + MINUTES_PX + SECONDS_PX
     }
   }, []);
@@ -204,7 +200,8 @@ const ScheduleRender: React.FC<ScheduleRenderType> = ({
           onMouseDown={(ev) => mouseDownHandle(ev, index)}
           className={`${style.Calendar_ScheduleItem_container}`}
           style={{
-            left: `${index * 90}px`,
+            width: `${renderItemWidth}px`,
+            left: `${itemColLevelDict.get(data.id) * renderItemWidth}px`,
             position: 'absolute',
             height: `${calcHeight([data[rangeStartAndEndKey[0]], data[rangeStartAndEndKey[1]]]) || 30}px`,
             top: calcTop(data[rangeStartAndEndKey[0]]),
